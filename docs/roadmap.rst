@@ -16,6 +16,31 @@ Version 0.1 is meant as a first demonstrator, being able to load and display rea
   * Display subscans
 
 
+For later versions
+==================
+
+* Display characteristics for each scan
+
+  * start/stop time of the scan (and total scan taken)
+  * maximum: position and value
+  * FWHM
+  * step width of scan
+  * anything else?
+
+* Display characteristics of the beamline
+
+  * What exactly?
+
+* Processing and analysis
+
+  * energy edge (there should be code available... rewrite or include via plugin mechanism)
+  * should be seen in context of a ``radiometry`` Python package for data processing and analysis
+
+* Further display modes
+
+  * Comparing parameters for scans (perhaps with diff view and/or colours)
+
+
 General
 =======
 
