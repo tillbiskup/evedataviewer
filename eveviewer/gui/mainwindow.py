@@ -107,7 +107,7 @@ Module documentation
 
 """
 
-from PySide6 import QtWidgets
+from PySide6 import QtWidgets, QtCore
 
 import qtbricks.filebrowser
 import qtbricks.mainwindow
@@ -155,6 +155,7 @@ class MainWindow(qtbricks.mainwindow.MainWindow):
         self.plot = qtbricks.plot.Plot()
         # Needs to appear after the central widgets, but before the model
         super().__init__()
+        self.setMinimumSize(QtCore.QSize(1000, 600))
         self.model = model.Model()
         self.model.figure = self.plot.figure
         self.file_browser.selection_changed.connect(self._update_model)

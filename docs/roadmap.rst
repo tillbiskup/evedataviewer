@@ -8,7 +8,12 @@ A few ideas how to develop the project further, currently a list as a reminder f
 For version 0.1
 ===============
 
-* ...
+Version 0.1 is meant as a first demonstrator, being able to load and display real data. This version should allow to get immediate feedback from the users: Are we developing the right tool? What are the most important next features to implement?
+
++ GUI features
+
+  * Select axes/channels to be plotted
+  * Display subscans
 
 
 General
