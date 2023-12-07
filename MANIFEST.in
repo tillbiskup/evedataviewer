@@ -1,0 +1,14 @@
+# Include the README
+include README*
+
+# Include the VERSION
+include VERSION
+
+# Include the LICENSE
+include LICENSE*
+
+# Include package data
+recursive-include eveviewer *
+
+# Include GUI data
+recursive-include eveviewer/gui/images *

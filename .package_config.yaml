@@ -1,0 +1,25 @@
+package:
+  name: 'eveviewer'
+  author: 'Till Biskup'
+  author_email: 'till.biskup@ptb.de'
+  year: '2023'
+  description: 'A GUI for inspecting data contained in EVE files'
+  urls:
+    main: 'https://www.ahf.ptb.de/'
+    documentation: 'https://eveviewer.docs.till-biskup.de/'
+    source: 'https://github.com/tillbiskup/eveviewer'
+  keywords: ['data viewer', 'eve', 'radiometry', 'synchrotron', 'metrology', 'PTB', 'BESSY']
+  install_requires: []
+  license: GPLv3
+documentation:
+  logo: ''
+  favicon: ''
+  language: en
+options:
+  logging: false
+  git: true
+  gui: true
+gui:
+  splash: true
+  organisation: 'eveviewer'
+  domain: 'ptb.de'

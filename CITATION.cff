@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it using these metadata.
+title: eveviewer
+abstract: >
+    A GUI for inspecting data contained in EVE files
+authors:
+  - family-names: Biskup
+    given-names: Till
+    orcid: "https://orcid.org/0000-0003-2913-0004"
+type: software
+license: GPL-3.0
+repository-code: "https://github.com/tillbiskup/eveviewer"
+keywords:
+  - "data viewer"
+  - "eve"
+  - "radiometry"
+  - "synchrotron"
+  - "metrology"
+  - "PTB"
+  - "BESSY"
+# Highly recommended starting with the first release: DOI via Zenodo
+#identifiers:
+#  - description: "The concept DOI of the work."
+#    type: doi
+#    value: 10.5281/zenodo.########
