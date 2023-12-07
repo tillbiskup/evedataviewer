@@ -1,5 +1,53 @@
 """
-Model for the eveViewer application.
+Model for the eveviewer GUI application.
+
+.. note::
+
+    A note for developers: Following the Model--View (MV) pattern, the model
+    does not care nor knows about the view, but the view (here:
+    :class:`eveviewer.gui.mainwindow.MainWindow`) knows about the model
+    and connects to the appropriate signals and slots. The model is the
+    place to define the "business logic", *i.e.* the (abstract) behaviour of
+    the application. Furthermore, the model is responsible to provide the
+    data to the connected view(s).
+
+
+Core business logic
+===================
+
+For the time being, a perhaps simplistic birds-eye view on what eveviewer
+is supposed to do:
+
+* Allow the user to browse data files and select one or several files for
+  display.
+* Allow for several different display modes of the data (graphical, tabular,
+  ...).
+
+
+For the model, this boils down to:
+
+* Provide a list of datasets to be displayed.
+* Load data contained in the list of datasets to be selected.
+* Display data contained in the list of datasets to be displayed,
+  with the display mode depending on internal settings.
+
+
+Additional aspects not yet implemented, but necessary:
+
+* Select channels and axes to plot (basically, *x* and *y* data)
+* Handle subscans within a dataset (and remember the current subscan number)
+
+
+Things to be decided upon:
+
+* How to deal with displaying multiple datasets with incompatible axes?
+* Shall datasets remember the setting for channel/axis/subscan during one
+  session of the GUI? Probably yes...
+* Shall datasets remember plot-specific settings?
+
+
+Implementation
+==============
 
 Currently, the idea is very simplistic:
 
@@ -19,6 +67,10 @@ Currently, the idea is very simplistic:
   * handle of Matplotlib figure
   * if None, do not plot
 
+
+Module documentation
+====================
+
 """
 
 import eveviewer.dataset
@@ -28,7 +80,7 @@ from eveviewer import utils
 
 class Model:
     """
-    Model for the eveViewer application.
+    Model for the eveviewer application.
 
     Attributes
     ----------
@@ -105,6 +157,19 @@ class Model:
         Possibilities would be, besides the currently implemented graphical
         display (``plot``), a tabular display or even a diff display for two
         or more datasets, showing the differences in the metadata.
+
+        .. important::
+            Usually, you should call this method rather than those methods
+            dealing with a concrete display mode, such as :meth:`plot_data`,
+            as this method takes care of loading the data if they are not
+            yet internally available.
+
+        .. note::
+            For developers: For maximum flexibility and modularity,
+            the actual display mode is used as first part of the method
+            name. Hence, if you want to implement/support further display
+            types, create a non-public method :meth:`<display_mode>_data`
+            and implement all necessary functionality therein.
 
         """
         for dataset in self.datasets_to_display:
