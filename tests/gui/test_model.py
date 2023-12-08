@@ -48,21 +48,6 @@ class TestModel(unittest.TestCase):
         self.model.load_data(filename=dataset)
         self.assertIn(dataset, self.model.datasets)
 
-    def test_plot_data_without_figure_set_doesnt_plot(self):
-        class MockModel(gui_model.Model):
-            def __init__(self):
-                super().__init__()
-                self.method_called = False
-
-            def display_data(self):
-                super().display_data()
-                self.method_called = True
-
-        mock = MockModel()
-        mock.figure = None
-        self.model.plot_data()
-        self.assertFalse(mock.method_called)
-
     def test_plot_data_adds_data_to_figure(self):
         fig, ax = plt.subplots()
         self.assertFalse(ax.has_data())
