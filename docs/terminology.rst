@@ -39,7 +39,7 @@ EPICS
 eve
     editor, viewer, engine
 
-    The three (original) components of the measurement program the user encounters.
+    The three (original) components of the PTB measurement program at BESSY-II/MLS the user encounters.
 
 
 IDL
@@ -55,7 +55,7 @@ IOC
 monitor (section)
     Section of the measurement data for everything that is not changed or read during a scan, but still of interest.
 
-    Properties of devices as well as "dumb" devices can be defined as monitors.For a monitor, the value will be stored at the start of a scan and for every change. As changes can occur at any time (parallel to the actual scan), monitor events do not have a position count, but a timestamp (in milliseconds since start of the scan).
+    Properties of devices as well as "dumb" devices can be defined as monitors. For a monitor, the value will be stored at the start of a scan and for every change. As changes can occur at any time (parallel to the actual scan), monitor events do not have a position count, but a timestamp (in milliseconds since start of the scan).
 
 motor
     Actuator, device for which values can be set
