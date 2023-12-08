@@ -72,7 +72,36 @@ class ImporterFactory:
         return importer
 
 
-class DummyImporter:
+class Importer:
+    """
+    Base class for importers.
+
+    Although not formally an abstract class, it does not implement any
+    actual functionality, but leaves this for the child classes
+
+    Attributes
+    ----------
+    source : :class:`str`
+        Filename (typically the complete path) to the data.
+
+    """
+
+    def __init__(self):
+        self.source = ""
+
+    def import_into(self, dataset=None):
+        """
+        Import data into the given dataset.
+
+        Parameters
+        ----------
+        dataset : :class:`evefile.dataset.Dataset`
+            Dataset to import the data into
+
+        """
+
+
+class DummyImporter(Importer):
     """
     Dummy implementation of an importer for testing purposes only.
 
@@ -80,11 +109,7 @@ class DummyImporter:
     imports generally distinguishable.
     """
 
-    def __init__(self):
-        self.source = ""
-
-    @staticmethod
-    def import_into(dataset=None):
+    def import_into(self, dataset=None):
         """
         Import data into the given dataset.
 
@@ -104,7 +129,7 @@ class DummyImporter:
         dataset.data.axes[1].unit = "a.u."
 
 
-class EveHDF5Importer:
+class EveHDF5Importer(Importer):
     """
     Importer for EVE HDF5 files.
 
@@ -117,9 +142,6 @@ class EveHDF5Importer:
         Filename (typically the complete path) to the data.
 
     """
-
-    def __init__(self):
-        self.source = ""
 
     def import_into(self, dataset=None):
         """
