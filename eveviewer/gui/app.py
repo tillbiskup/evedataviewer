@@ -5,6 +5,7 @@ This module provides the high-level interface to the app and a function that
 gets wired up as "gui_script" entry point in the ``setup.py``.
 """
 
+import os
 import sys
 
 from PySide6 import QtWidgets, QtGui
@@ -35,7 +36,11 @@ def splash_screen():
 
     """
     splash = QtWidgets.QSplashScreen(
-        QtGui.QPixmap(qtbricks.utils.image_path("splash.svg"))
+        QtGui.QPixmap(
+            qtbricks.utils.image_path(
+                "icon.svg", base_dir=os.path.dirname(__file__)
+            )
+        )
     )
     splash.show()
     return splash
@@ -56,7 +61,13 @@ def main():
     app.setOrganizationName("eveviewer")
     app.setOrganizationDomain("ptb.de")
     app.setApplicationName("eveviewer")
-    app.setWindowIcon(QtGui.QIcon(qtbricks.utils.image_path("icon.svg")))
+    app.setWindowIcon(
+        QtGui.QIcon(
+            qtbricks.utils.image_path(
+                "icon.svg", base_dir=os.path.dirname(__file__)
+            )
+        )
+    )
     window = mainwindow.MainWindow()
     window.show()
     alignment = Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom
