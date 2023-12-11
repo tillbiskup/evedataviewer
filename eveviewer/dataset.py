@@ -19,11 +19,71 @@ class Dataset:
     Quick&dirty reimplementation of ASpecD concept of dataset.
 
     Will be replaced by proper dataset class based on the ASpecD framework.
+
+    Attributes
+    ----------
+    data : :class:`Data`
+        Actual data of the dataset.
+
+        The data stored in here are acted upon by all processing, analysis,
+        plot and other steps.
+
+    device_data : :class:`dict`
+        Series of devices and their corresponding data.
+
+        The keys of the dict correspond to the names of the devices. The
+        actual device data, *i.e.* the values corresponding to the keys, are
+        stored as :class:`Data`.
+
+    metadata : :class:`dict`
+        All relevant metadata for the dataset.
+
+        Currently, a plain dict, but will be replaced with appropriate classes.
+
     """
 
     def __init__(self):
         self.data = Data()
+        self.device_data = {}
+        self._preferred_data = []
         self.metadata = {}
+
+    @property
+    def preferred_data(self):
+        # noinspection PyUnresolvedReferences
+        """
+        Names of the devices used as preferred data.
+
+        Preferred data are used for both, axes and data values. Valid names
+        for the preferred data are the keys of the :attr:`device_data`
+        property.
+
+        Parameters
+        ----------
+        devices : :class:`list`
+            List of device names (as strings)
+
+        Returns
+        -------
+        preferred_data : :class:`list`
+            List of device names (as strings) set as preferred data
+
+        """
+        return self._preferred_data
+
+    @preferred_data.setter
+    def preferred_data(self, devices=None):
+        old_preferred_data = self._preferred_data
+        self._preferred_data = devices
+        if self._preferred_data != old_preferred_data:
+            self._set_data(device=self._preferred_data[0], kind="axes")
+            self._set_data(device=self._preferred_data[1], kind="data")
+
+    def _set_data(self, device="", kind=""):
+        if kind == "axes":
+            self.data.axes[0].values = self.device_data[device].data
+        elif kind == "data":
+            self.data.data = self.device_data[device].data
 
     def import_from(self, importer):
         """
@@ -31,7 +91,7 @@ class Dataset:
 
         Parameters
         ----------
-        importer : :class:`eveviewer.io.EveHDF5Importer`
+        importer : :class:`eveviewer.io.Importer`
             Importer object used to import the data
 
         """
