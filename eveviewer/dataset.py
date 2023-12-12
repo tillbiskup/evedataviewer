@@ -58,6 +58,9 @@ class Dataset:
         for the preferred data are the keys of the :attr:`device_data`
         property.
 
+        Setting preferred data will change data and axes values in
+        :attr:`data` accordingly.
+
         Parameters
         ----------
         devices : :class:`list`
@@ -84,6 +87,22 @@ class Dataset:
             self.data.axes[0].values = self.device_data[device].data
         elif kind == "data":
             self.data.data = self.device_data[device].data
+
+    @property
+    def devices(self):
+        """
+        Names of the devices data are available for.
+
+        Device data are stored in :attr:`device_data`, the names of the
+        devices are the keys of the :attr:`device_data` dict.
+
+        Returns
+        -------
+        devices : :class:`list`
+            List of strings with device names
+
+        """
+        return list(self.device_data.keys())
 
     def import_from(self, importer):
         """

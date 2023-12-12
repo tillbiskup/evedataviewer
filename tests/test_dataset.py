@@ -58,3 +58,11 @@ class TestDataset(unittest.TestCase):
         with self.assertRaises(KeyError):
             self.dataset.preferred_data = ["unknown_device", "bar"]
             self.dataset.preferred_data = ["foo", "unknown_device"]
+
+    def test_devices_returns_list_of_device_names(self):
+        device_names = ["foo", "bar", "bla", "blub"]
+        for idx, device in enumerate(device_names):
+            data = eve_dataset.Data()
+            data.data = np.ones(10) + idx
+            self.dataset.device_data[device] = data
+        self.assertListEqual(self.dataset.devices, device_names)
