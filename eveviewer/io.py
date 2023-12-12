@@ -135,12 +135,6 @@ class EveHDF5Importer(Importer):
 
     Currently, the importer uses the paradise module written by Mika
     Pflüger. However, it is planned to soon replace this with evefile.
-
-    Attributes
-    ----------
-    source : :class:`str`
-        Filename (typically the complete path) to the data.
-
     """
 
     def import_into(self, dataset=None):
