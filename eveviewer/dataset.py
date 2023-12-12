@@ -11,6 +11,8 @@ classes are implemented, to allow for a convenient drop-in replacement with
 the radiometry package.
 """
 
+import copy
+
 import numpy as np
 
 
@@ -35,6 +37,20 @@ class Dataset:
         actual device data, *i.e.* the values corresponding to the keys, are
         stored as :class:`Data`.
 
+    subscans : :class:`dict`
+        Information on subscans contained in the data of the dataset.
+
+        boundaries : :class:`list`
+            List of two-element lists containing the boundaries of each subscan
+
+            The first element starts with 0 as first index, the last element
+            ends with the length of the data vector as last element.
+
+        current : :class:`int`
+            Index of the current subscan
+
+            Set to -1 to temporarily disable subscans.
+
     metadata : :class:`dict`
         All relevant metadata for the dataset.
 
@@ -46,6 +62,10 @@ class Dataset:
         self.data = Data()
         self.device_data = {}
         self._preferred_data = []
+        self.subscans = {
+            "boundaries": [],
+            "current": -1,
+        }
         self.metadata = {}
 
     @property
@@ -103,6 +123,35 @@ class Dataset:
 
         """
         return list(self.device_data.keys())
+
+    @property
+    def subscan(self):
+        """
+        Current subscan of data, including data and axes.
+
+        The subscan is a copy of the original data. Hence, all manipulations on
+        a subscan are *not* reflected back to the original data.
+
+        Both, subscan boundaries and index of the current subscan are set within
+        the :attr:`subscans` property. If the index of the current subscan is
+        set to -1, the full data are returned.
+
+        Returns
+        -------
+        subscan : :class:`Data`
+            Current subscan of data, including data and axes.
+
+        """
+        if self.subscans["current"] == -1:
+            sliced_data = self.data
+        else:
+            slice_ = slice(
+                *self.subscans["boundaries"][self.subscans["current"]]
+            )
+            sliced_data = copy.copy(self.data)
+            sliced_data.data = sliced_data.data[slice_]
+            sliced_data.axes[0].values = sliced_data.axes[0].values[slice_]
+        return sliced_data
 
     def import_from(self, importer):
         """

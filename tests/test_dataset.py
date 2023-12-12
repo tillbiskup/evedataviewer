@@ -66,3 +66,54 @@ class TestDataset(unittest.TestCase):
             data.data = np.ones(10) + idx
             self.dataset.device_data[device] = data
         self.assertListEqual(self.dataset.devices, device_names)
+
+    def test_subscan_returns_data_object(self):
+        self.dataset.data.data = np.zeros(10)
+        self.dataset.data.axes[0].values = np.linspace(1, 10, 10)
+        self.dataset.subscans["boundaries"] = [[0, 5], [5, 10]]
+        self.dataset.subscans["current"] = 0
+        self.assertIsInstance(self.dataset.subscan, eve_dataset.Data)
+
+    def test_subscan_returns_current_subscan_of_data(self):
+        self.dataset.data.data = np.zeros(10)
+        self.dataset.data.axes[0].values = np.linspace(1, 10, 10)
+        self.dataset.subscans["boundaries"] = [[0, 5], [5, 10]]
+        self.dataset.subscans["current"] = 0
+        slice_ = slice(
+            *self.dataset.subscans["boundaries"][
+                self.dataset.subscans["current"]
+            ]
+        )
+        data = self.dataset.subscan
+        np.testing.assert_allclose(
+            data.data,
+            self.dataset.data.data[slice_],
+        )
+        np.testing.assert_allclose(
+            data.axes[0].values,
+            self.dataset.data.axes[0].values[slice_],
+        )
+
+    def test_subscan_does_not_modify_data(self):
+        self.dataset.data.data = np.zeros(10)
+        self.dataset.data.axes[0].values = np.linspace(1, 10, 10)
+        length = len(self.dataset.data.data)
+        self.dataset.subscans["boundaries"] = [[0, 5], [5, 10]]
+        self.dataset.subscans["current"] = 0
+        _ = self.dataset.subscan
+        self.assertEqual(len(self.dataset.data.data), length)
+
+    def test_subscan_with_current_subscan_set_to_minus_one_returns_data(self):
+        self.dataset.data.data = np.zeros(10)
+        self.dataset.data.axes[0].values = np.linspace(1, 10, 10)
+        self.dataset.subscans["boundaries"] = [[0, 5], [5, 10]]
+        self.dataset.subscans["current"] = -1
+        data = self.dataset.subscan
+        np.testing.assert_allclose(
+            data.data,
+            self.dataset.data.data,
+        )
+        np.testing.assert_allclose(
+            data.axes[0].values,
+            self.dataset.data.axes[0].values,
+        )
