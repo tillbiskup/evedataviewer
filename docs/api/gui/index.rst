@@ -11,7 +11,9 @@ eveviewer.gui subpackage
     :maxdepth: 1
 
     eveviewer.gui.app
+    eveviewer.gui.dataset_display_widget
     eveviewer.gui.mainwindow
     eveviewer.gui.model
+
 
 
