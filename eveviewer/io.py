@@ -96,7 +96,7 @@ class Importer:
 
         Parameters
         ----------
-        dataset : :class:`evefile.dataset.Dataset`
+        dataset : :class:`eveviewer.dataset.Dataset`
             Dataset to import the data into
 
         """
@@ -116,7 +116,7 @@ class DummyImporter(Importer):
 
         Parameters
         ----------
-        dataset : :class:`evefile.dataset.Dataset`
+        dataset : :class:`eveviewer.dataset.Dataset`
             Dataset to import the data into
 
         """
@@ -158,7 +158,7 @@ class EveHDF5Importer(Importer):
 
         Parameters
         ----------
-        dataset : :class:`evefile.dataset.Dataset`
+        dataset : :class:`eveviewer.dataset.Dataset`
             Dataset to import the data into
 
         """

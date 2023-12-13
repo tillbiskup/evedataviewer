@@ -60,8 +60,8 @@ class TestDataset(unittest.TestCase):
             data.axes[1].unit = f"{device}_unit"
             self.dataset.device_data[device] = data
         self.dataset.preferred_data = ["bla", "blub"]
-        self.assertEqual(self.dataset.data.axes[0].quantity, "bla_index")
-        self.assertEqual(self.dataset.data.axes[0].unit, "index")
+        self.assertEqual(self.dataset.data.axes[0].quantity, "bla")
+        self.assertEqual(self.dataset.data.axes[0].unit, "bla_unit")
         self.assertEqual(self.dataset.data.axes[1].quantity, "blub")
         self.assertEqual(self.dataset.data.axes[1].unit, "blub_unit")
 
