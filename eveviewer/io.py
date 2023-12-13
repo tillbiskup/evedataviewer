@@ -15,6 +15,7 @@ import os
 import numpy as np
 
 from eveviewer import paradise
+from eveviewer import dataset as eve_dataset
 
 
 def report_problematic_file(filename=""):
@@ -135,6 +136,20 @@ class EveHDF5Importer(Importer):
 
     Currently, the importer uses the paradise module written by Mika
     Pflüger. However, it is planned to soon replace this with evefile.
+
+    .. warning::
+        As of now (2023-12), the importer is only rudimentary, importing
+        only the data, but no metadata. Relevant metadata will follow in
+        conjunction with developing a rich data model for the dataset.
+
+    All channels are stored as ``device_data`` in the dataset and the
+    preferred channel and preferred axis set if available. Otherwise,
+    the first channel will be set as preferred and the index used as
+    corresponding axis.
+
+    Furthermore, a "PosCounter" entry will be added to ``device_data`` as a
+    "dummy device". Thus, you are able to set the position counter as axis.
+
     """
 
     def import_into(self, dataset=None):
@@ -159,28 +174,30 @@ class EveHDF5Importer(Importer):
                 f"has been reported."
             )
             return
+        for column in data.data.columns:
+            device_data = eve_dataset.Data()
+            device_data.data = data.data[column].to_numpy()
+            device_data.axes[0].values = data.data.index.to_numpy()
+            device_data.axes[0].quantity = data.data.index.name
+            device_data.axes[1].quantity = column
+            if column in data.units:
+                device_data.axes[1].unit = data.units[column]
+            else:
+                device_data.axes[1].unit = ""
+            dataset.device_data[column] = device_data
+        # Add "PosCounter" as "dummy" device to be able to set it as axis
+        position_counter = eve_dataset.Data()
+        position_counter.data = data.data.index.to_numpy()
+        position_counter.axes[0].values = data.data.index.to_numpy()
+        position_counter.axes[0].quantity = data.data.index.name
+        position_counter.axes[1].quantity = data.data.index.name
+        dataset.device_data["PosCounter"] = position_counter
         if not data.preferred_channel:
             data.preferred_channel = data.data.columns[0]
             print(
                 f"{self.source}: No preferred channel, using"
                 f" {data.preferred_channel}"
             )
-        dataset.data.data = data.data[data.preferred_channel].to_numpy()
         if not data.preferred_axis:
-            print(f"{self.source}: No preferred axis, using indices")
-            dataset.data.axes[0].values = data.data.index.values
-            dataset.data.axes[0].quantity = data.data.index.name or "index"
-        else:
-            dataset.data.axes[0].values = data.data[
-                data.preferred_axis
-            ].to_numpy()
-            dataset.data.axes[0].quantity = data.preferred_axis
-        try:
-            dataset.data.axes[0].unit = data.units[data.preferred_axis]
-        except KeyError:
-            dataset.data.axes[0].unit = ""
-        dataset.data.axes[1].quantity = data.preferred_channel
-        try:
-            dataset.data.axes[1].unit = data.units[data.preferred_channel]
-        except KeyError:
-            dataset.data.axes[1].unit = ""
+            data.preferred_axis = data.data.index.name
+        dataset.preferred_data = [data.preferred_axis, data.preferred_channel]

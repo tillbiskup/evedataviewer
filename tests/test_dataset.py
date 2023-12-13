@@ -47,6 +47,24 @@ class TestDataset(unittest.TestCase):
             self.dataset.device_data["blub"].data,
         )
 
+    def test_set_preferred_data_sets_axes_quantities(self):
+        device_names = ["foo", "bar", "bla", "blub"]
+        self.dataset.data.data = np.zeros(10)
+        self.dataset.data.axes[0].values = np.linspace(1, 10, 10)
+        for idx, device in enumerate(device_names):
+            data = eve_dataset.Data()
+            data.data = np.ones(10) + idx
+            data.axes[0].quantity = f"{device}_index"
+            data.axes[0].unit = "index"
+            data.axes[1].quantity = f"{device}"
+            data.axes[1].unit = f"{device}_unit"
+            self.dataset.device_data[device] = data
+        self.dataset.preferred_data = ["bla", "blub"]
+        self.assertEqual(self.dataset.data.axes[0].quantity, "bla_index")
+        self.assertEqual(self.dataset.data.axes[0].unit, "index")
+        self.assertEqual(self.dataset.data.axes[1].quantity, "blub")
+        self.assertEqual(self.dataset.data.axes[1].unit, "blub_unit")
+
     def test_set_preferred_data_with_unknown_key_raises(self):
         device_names = ["foo", "bar", "bla", "blub"]
         self.dataset.data.data = np.zeros(10)

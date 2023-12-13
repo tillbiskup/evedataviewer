@@ -105,8 +105,16 @@ class Dataset:
     def _set_data(self, device="", kind=""):
         if kind == "axes":
             self.data.axes[0].values = self.device_data[device].data
+            self.data.axes[0].quantity = (
+                self.device_data[device].axes[0].quantity
+            )
+            self.data.axes[0].unit = self.device_data[device].axes[0].unit
         elif kind == "data":
             self.data.data = self.device_data[device].data
+            self.data.axes[1].quantity = (
+                self.device_data[device].axes[1].quantity
+            )
+            self.data.axes[1].unit = self.device_data[device].axes[1].unit
 
     @property
     def devices(self):
