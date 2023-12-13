@@ -134,7 +134,9 @@ class DummyImporter(Importer):
         """
         devices = [self._create_channel_names() for i in range(6)]
         for device in devices:
-            dataset.device_data[device] = self._create_data()
+            dataset.device_data[device] = self._create_data(
+                channel_name=device
+            )
         pos_counter_data = self._create_data()
         pos_counter_data.data = pos_counter_data.axes[0].values
         pos_counter_data.axes[1].quantity = pos_counter_data.axes[0].quantity
