@@ -21,6 +21,23 @@ class TestImporterFactory(unittest.TestCase):
         self.assertIsInstance(importer, eve_io.EveHDF5Importer)
 
 
+class TestDummyImporter(unittest.TestCase):
+    def setUp(self):
+        self.importer = eve_io.DummyImporter()
+        self.dataset = eve_dataset.Dataset()
+
+    def test_instantiate_class(self):
+        pass
+
+    def test_import_adds_data_to_dataset(self):
+        self.importer.import_into(self.dataset)
+        self.assertTrue(self.dataset.data.data.any())
+
+    def test_import_adds_device_data_to_dataset(self):
+        self.importer.import_into(self.dataset)
+        self.assertTrue(self.dataset.device_data.keys())
+
+
 class TestEveHDF5Importer(unittest.TestCase):
     path_to_testdata = "/messung/sx700/daten/2023/KW44_23/PTB/00003.h5"
 

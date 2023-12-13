@@ -11,6 +11,8 @@ classes are implemented, to allow for a convenient drop-in replacement with
 the radiometry package.
 """
 import os
+import random
+import string
 
 import numpy as np
 
@@ -108,6 +110,16 @@ class DummyImporter(Importer):
 
     The data are generated with a random component, to make subsequent
     imports generally distinguishable.
+
+    For a reasonably realistic dataset, a series of device_data entries are
+    created each having randomly created names.
+
+    .. note::
+        Although the "data" imported into the dataset are complete fake
+        data, the importer will probably be updated with the model
+        underlying the dataset class :class:`eveviewer.dataset.Dataset`.
+        This allows for testing the viewer without access to real data.
+
     """
 
     def import_into(self, dataset=None):
@@ -120,14 +132,32 @@ class DummyImporter(Importer):
             Dataset to import the data into
 
         """
+        devices = [self._create_channel_names() for i in range(6)]
+        for device in devices:
+            dataset.device_data[device] = self._create_data()
+        pos_counter_data = self._create_data()
+        pos_counter_data.data = pos_counter_data.axes[0].values
+        pos_counter_data.axes[1].quantity = pos_counter_data.axes[0].quantity
+        pos_counter_data.axes[1].unit = pos_counter_data.axes[0].unit
+        dataset.device_data["PosCounter"] = pos_counter_data
+        dataset.preferred_data = ["PosCounter", devices[0]]
+
+    @staticmethod
+    def _create_channel_names():
+        return "".join(random.choices(string.ascii_letters + "_", k=12))
+
+    @staticmethod
+    def _create_data(channel_name="intensity"):
+        data = eve_dataset.Data()
         xdata = np.arange(0.0, 4.0, 0.01)
         ydata = np.sin(4 * np.pi * xdata * np.random.random(1))
-        dataset.data.data = ydata
-        dataset.data.axes[0].values = xdata
-        dataset.data.axes[0].quantity = "count"
-        dataset.data.axes[0].unit = ""
-        dataset.data.axes[1].quantity = "intensity"
-        dataset.data.axes[1].unit = "a.u."
+        data.data = ydata
+        data.axes[0].values = np.linspace(1, len(xdata), len(xdata))
+        data.axes[0].quantity = "PosCounter"
+        data.axes[0].unit = ""
+        data.axes[1].quantity = channel_name
+        data.axes[1].unit = "a.u."
+        return data
 
 
 class EveHDF5Importer(Importer):
