@@ -1,13 +1,17 @@
 """
 Widget for setting dataset display options.
 
-For each individual dataset, the axes and data to be displayed need to be
-changeable. Furthermore, depending on the dataset, displaying and flicking
-through sub-scans should be possible as well.
+**Purpose:** For each individual dataset, the axes and data to be displayed
+need to be changeable. Furthermore, depending on the dataset, displaying and
+flicking through sub-scans should be possible as well.
 
-The widget should be as self-contained and self-consistent as possible,
-corresponding with the model of the main window giving access to the
-datasets and the list of currently selected datasets.
+**Design principles:** The widget should be as self-contained and
+self-consistent as possible, corresponding with the model of the main window
+giving access to the datasets and the list of currently selected datasets.
+
+**Limitations:** This widget is meant to actively set display options of the
+individual datasets currently displayed. Presenting information (metadata)
+of the respective dataset should be handled by other widgets.
 
 Below is a first summary of what the widget should allow doing:
 
@@ -17,7 +21,10 @@ Below is a first summary of what the widget should allow doing:
   disabled, at least no dataset should be shown.
 
   The datasets should probably be identified by the filenames excluding the
-  path, as otherwise, the combobox will be quite wide.
+  path, as otherwise, the combobox will be quite wide. Best to use the
+  "label" attribute of the dataset and have the importer initially set this
+  to a sensible value (and in the long run, provide the user with the ability
+  to change it).
 
 * For the selected dataset, select one or both of x and y axes from the
   list of available channels (*i.e.*, device data in the dataset).
@@ -28,14 +35,17 @@ Below is a first summary of what the widget should allow doing:
 * For the selected dataset, flick through the sub-scans if there are any.
 
   Setting the sub-scan index to ``-1`` should disable the sub-scan
-  display and display the entire dataset instead.
+  display and display the entire dataset instead. Using ``-1`` rather than
+  ``0`` internally is due to the zero-based indexing of Python. For the
+  actual display, this may be changed depending on user preferences.
 
 The widget gets added to the main GUI window of the eveviewer GUI, either as
 dockable window (preferable) or fixed in the layout.
 
 """
 
-from PySide6 import QtWidgets
+from PySide6 import QtWidgets, QtCore
+import qtbricks.utils
 
 
 class DatasetDisplayWidget(QtWidgets.QWidget):
@@ -67,6 +77,11 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         self._x_axis_label = QtWidgets.QLabel()
         self._y_axis_combobox = QtWidgets.QComboBox()
         self._y_axis_label = QtWidgets.QLabel()
+        self._subscan_decrement_button = QtWidgets.QPushButton()
+        self._subscan_increment_button = QtWidgets.QPushButton()
+        self._subscan_current_edit = QtWidgets.QLineEdit("-1")
+        self._subscan_number_label = QtWidgets.QLabel("0")
+        self._subscan_label = QtWidgets.QLabel()
 
         self._setup_ui()
         self._update_ui()
@@ -128,6 +143,38 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         self._y_axis_label.setObjectName("y_axis_label")
         self._y_axis_label.setBuddy(self._y_axis_combobox)
 
+        self._subscan_decrement_button = qtbricks.utils.create_button(
+            text="",
+            slot=None,
+            shortcut="",
+            icon="backward-step.svg",
+            checkable=False,
+            tooltip="Show previous sub-scan",
+        )
+        self._subscan_decrement_button.setFixedSize(
+            self._y_axis_combobox.sizeHint().height(),
+            self._y_axis_combobox.sizeHint().height(),
+        )
+        self._subscan_increment_button = qtbricks.utils.create_button(
+            text="",
+            slot=None,
+            shortcut="",
+            icon="forward-step.svg",
+            checkable=False,
+            tooltip="Show next sub-scan",
+        )
+        self._subscan_increment_button.setFixedSize(
+            self._y_axis_combobox.sizeHint().height(),
+            self._y_axis_combobox.sizeHint().height(),
+        )
+        self._subscan_current_edit.setFixedSize(
+            self._y_axis_combobox.sizeHint().height() * 1.2,
+            self._y_axis_combobox.sizeHint().height(),
+        )
+        self._subscan_current_edit.setAlignment(QtCore.Qt.AlignRight)
+        self._subscan_label.setText("Sub-scans:")
+        self._subscan_label.setObjectName("subscan_label")
+
     def _set_layout(self):
         """
         Lay out the elements of the widget.
@@ -146,8 +193,18 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         top_layout.addWidget(self._x_axis_combobox, 1, 1)
         top_layout.addWidget(self._y_axis_label, 2, 0)
         top_layout.addWidget(self._y_axis_combobox, 2, 1)
+        subscans_layout = QtWidgets.QHBoxLayout()
+        subscans_layout.addWidget(self._subscan_decrement_button)
+        subscans_layout.addWidget(self._subscan_increment_button)
+        subscans_layout.addWidget(self._subscan_current_edit)
+        subscans_layout.addWidget(QtWidgets.QLabel("/"))
+        subscans_layout.addWidget(self._subscan_number_label)
+        subscans_layout.addStretch(1)
+        top_layout.addWidget(self._subscan_label, 3, 0)
+        top_layout.addLayout(subscans_layout, 3, 1)
         layout = QtWidgets.QVBoxLayout()
         layout.addLayout(top_layout)
+        layout.addStretch(1)
         self.setLayout(layout)
 
     def _connect_signals(self):
