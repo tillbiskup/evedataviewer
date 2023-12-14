@@ -147,7 +147,7 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
             text="",
             slot=None,
             shortcut="",
-            icon="backward-step.svg",
+            icon="circle-left.svg",
             checkable=False,
             tooltip="Show previous sub-scan",
         )
@@ -159,7 +159,7 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
             text="",
             slot=None,
             shortcut="",
-            icon="forward-step.svg",
+            icon="circle-right.svg",
             checkable=False,
             tooltip="Show next sub-scan",
         )
