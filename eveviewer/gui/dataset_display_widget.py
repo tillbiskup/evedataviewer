@@ -47,7 +47,10 @@ dockable window (preferable) or fixed in the layout.
 from PySide6 import QtWidgets, QtCore
 import qtbricks.utils
 
+from eveviewer.gui import model
 
+
+# pylint: disable=too-many-instance-attributes
 class DatasetDisplayWidget(QtWidgets.QWidget):
     """
     Display settings for individual datasets, allowing to select the dataset.
@@ -59,8 +62,8 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
 
     Attributes
     ----------
-    attr : :class:`None`
-        Short description
+    model : :class:`eveviewer.gui.model.Model`
+        Model of the Model--View architecture used by the widget
 
     cls.signal_name : :class:`QtCore.Signal`
         Signal emitted when ...
@@ -69,6 +72,8 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
 
     def __init__(self):
         super().__init__()
+
+        self.model = model.Model()
 
         # Define all UI elements (widgets) here as non-public attributes
         self._dataset_combobox = QtWidgets.QComboBox()
@@ -98,9 +103,9 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         #. Set the layout
         #. Connect the signals and slots
 
-         A requirement is to define all widgets as non-public attributes in
-         the class constructor. This comes with the advantage to separate
-         the different tasks into methods.
+        A requirement is to define all widgets as non-public attributes in
+        the class constructor. This comes with the advantage to separate
+        the different tasks into methods.
         """
         self._set_widget_properties()
         self._set_layout()
@@ -111,8 +116,26 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         Update all the elements of the widget.
 
         This is the once central place taking care of updating all the
-        user-facing elements of your widget.
+        user-facing elements of the widget.
         """
+        dataset_labels = [
+            self.model.datasets[dataset].label
+            for dataset in self.model.datasets_to_display
+        ]
+        self._dataset_combobox.addItems(dataset_labels)
+        if self.model.datasets_to_display:
+            selected_dataset = self._dataset_combobox.currentIndex()
+            dataset_name = self.model.datasets_to_display[selected_dataset]
+            axes = self.model.datasets[dataset_name].devices
+            preferred = self.model.datasets[dataset_name].preferred_data
+            self._x_axis_combobox.addItems(axes)
+            self._x_axis_combobox.setCurrentIndex(
+                self._x_axis_combobox.findText(preferred[0])
+            )
+            self._y_axis_combobox.addItems(axes)
+            self._y_axis_combobox.setCurrentIndex(
+                self._y_axis_combobox.findText(preferred[1])
+            )
 
     def _set_widget_properties(self):
         """
@@ -226,6 +249,9 @@ if __name__ == "__main__":
         def __init__(self):
             super().__init__()
             widget = DatasetDisplayWidget()
+            dataset_names = ["/foo/bar/bla.blub", "/foo/bar/foobar.blub"]
+            widget.model.datasets_to_display = dataset_names
+            widget._update_ui()
             self.setCentralWidget(widget)
             self.show()
 
