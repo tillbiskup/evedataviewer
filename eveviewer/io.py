@@ -149,7 +149,9 @@ class DummyImporter(Importer):
 
     @staticmethod
     def _create_channel_names():
-        return "".join(random.choices(string.ascii_letters + "_", k=12))
+        return "".join(
+            random.choices(string.ascii_letters + "_", k=12)  # nosec
+        )
 
     @staticmethod
     def _create_data(channel_name="intensity"):

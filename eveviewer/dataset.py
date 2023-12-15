@@ -65,7 +65,7 @@ class Dataset:
     """
 
     def __init__(self):
-        self.id = ""
+        self.id = ""  # pylint: disable=invalid-name
         self.label = ""
         self.data = Data()
         self.device_data = {}
