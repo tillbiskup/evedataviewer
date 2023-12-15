@@ -102,6 +102,8 @@ class Importer:
             Dataset to import the data into
 
         """
+        dataset.id = self.source
+        dataset.label = os.path.split(self.source)[1]
 
 
 class DummyImporter(Importer):
@@ -132,6 +134,7 @@ class DummyImporter(Importer):
             Dataset to import the data into
 
         """
+        super().import_into(dataset=dataset)
         devices = [self._create_channel_names() for i in range(6)]
         for device in devices:
             dataset.device_data[device] = self._create_data(
@@ -194,6 +197,7 @@ class EveHDF5Importer(Importer):
             Dataset to import the data into
 
         """
+        super().import_into(dataset=dataset)
         try:
             data = paradise.StandardMeasurement(self.source)
         except ValueError:

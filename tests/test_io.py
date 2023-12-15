@@ -21,6 +21,27 @@ class TestImporterFactory(unittest.TestCase):
         self.assertIsInstance(importer, eve_io.EveHDF5Importer)
 
 
+class TestImporter(unittest.TestCase):
+    def setUp(self):
+        self.importer = eve_io.Importer()
+        self.dataset = eve_dataset.Dataset()
+
+    def test_instantiate_class(self):
+        pass
+
+    def test_import_into_sets_dataset_id_to_source(self):
+        source = "foo/bar/bla.blub"
+        self.importer.source = source
+        self.importer.import_into(self.dataset)
+        self.assertEqual(self.dataset.id, source)
+
+    def test_import_into_sets_dataset_label_to_filename_without_path(self):
+        source = "foo/bar/bla.blub"
+        self.importer.source = source
+        self.importer.import_into(self.dataset)
+        self.assertEqual(self.dataset.label, os.path.split(source)[1])
+
+
 class TestDummyImporter(unittest.TestCase):
     def setUp(self):
         self.importer = eve_io.DummyImporter()
@@ -36,6 +57,18 @@ class TestDummyImporter(unittest.TestCase):
     def test_import_adds_device_data_to_dataset(self):
         self.importer.import_into(self.dataset)
         self.assertTrue(self.dataset.device_data.keys())
+
+    def test_import_into_sets_dataset_id_to_source(self):
+        source = "foo/bar/bla.blub"
+        self.importer.source = source
+        self.importer.import_into(self.dataset)
+        self.assertEqual(self.dataset.id, source)
+
+    def test_import_into_sets_dataset_label_to_filename_without_path(self):
+        source = "foo/bar/bla.blub"
+        self.importer.source = source
+        self.importer.import_into(self.dataset)
+        self.assertEqual(self.dataset.label, os.path.split(source)[1])
 
 
 class TestEveHDF5Importer(unittest.TestCase):
@@ -59,3 +92,17 @@ class TestEveHDF5Importer(unittest.TestCase):
         self.importer.source = self.path_to_testdata
         self.importer.import_into(self.dataset)
         self.assertIn("PosCounter", self.dataset.device_data)
+
+    @unittest.skipUnless(os.path.exists(path_to_testdata), "No test data")
+    def test_import_into_sets_dataset_id_to_source(self):
+        self.importer.source = self.path_to_testdata
+        self.importer.import_into(self.dataset)
+        self.assertEqual(self.dataset.id, self.importer.source)
+
+    @unittest.skipUnless(os.path.exists(path_to_testdata), "No test data")
+    def test_import_into_sets_dataset_label_to_filename_without_path(self):
+        self.importer.source = self.path_to_testdata
+        self.importer.import_into(self.dataset)
+        self.assertEqual(
+            self.dataset.label, os.path.split(self.importer.source)[1]
+        )

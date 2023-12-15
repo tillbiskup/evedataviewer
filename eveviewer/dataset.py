@@ -24,6 +24,12 @@ class Dataset:
 
     Attributes
     ----------
+    id : :class:`str`
+        (unique) identifier of the dataset (i.e., path, LOI, or else)
+
+    label : :class:`str`
+        Short description of the dataset
+
     data : :class:`Data`
         Actual data of the dataset.
 
@@ -59,6 +65,8 @@ class Dataset:
     """
 
     def __init__(self):
+        self.id = ""
+        self.label = ""
         self.data = Data()
         self.device_data = {}
         self._preferred_data = []
