@@ -89,3 +89,34 @@ class TestDatasetDisplayWidget(unittest.TestCase):
                 self.widget._y_axis_combobox.currentIndex()
             ),
         )
+
+    def test_subscans_widgets_are_disabled_if_dataset_has_no_subscans(self):
+        dataset_name = "/foo/bar/bla.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        self.widget.model.datasets[dataset_name].subscans["boundaries"] = []
+        self.widget._update_ui()
+        for widget in self.widget._subscan_widgets:
+            self.assertFalse(widget.isEnabled())
+
+    def test_subscans_widgets_are_enabled_if_dataset_has_subscans(self):
+        dataset_name = "/foo/bar/bla.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        self.widget.model.datasets[dataset_name].subscans["boundaries"] = [
+            0,
+            42,
+        ]
+        self.widget._update_ui()
+        for widget in self.widget._subscan_widgets:
+            self.assertTrue(widget.isEnabled())
+
+    def test_subscans_widgets_are_reenabled_if_dataset_has_subscans(self):
+        dataset_name = "/foo/bar/bla.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        self.widget._update_ui()
+        self.widget.model.datasets[dataset_name].subscans["boundaries"] = [
+            0,
+            42,
+        ]
+        self.widget._update_ui()
+        for widget in self.widget._subscan_widgets:
+            self.assertTrue(widget.isEnabled())

@@ -51,6 +51,7 @@ from eveviewer.gui import model
 
 
 # pylint: disable=too-many-instance-attributes
+# noinspection PyUnresolvedReferences
 class DatasetDisplayWidget(QtWidgets.QWidget):
     """
     Display settings for individual datasets, allowing to select the dataset.
@@ -88,6 +89,12 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         self._subscan_number_label = QtWidgets.QLabel("0")
         self._subscan_label = QtWidgets.QLabel()
 
+        self._subscan_widgets = [
+            getattr(self, attr)
+            for attr in dir(self)
+            if attr.startswith("_subscan_")
+        ]
+
         self._setup_ui()
         self._update_ui()
 
@@ -120,6 +127,7 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         """
         self._update_dataset_combobox()
         self._update_axes_comboboxes()
+        self._update_subscan_widgets()
 
     def _update_dataset_combobox(self):
         dataset_labels = [
@@ -150,6 +158,22 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
             self._y_axis_combobox.setCurrentIndex(
                 self._y_axis_combobox.findText(preferred[1])
             )
+
+    def _update_subscan_widgets(self):
+        selected_dataset = self._dataset_combobox.currentIndex()
+        if selected_dataset == -1:
+            return
+        dataset_name = self.model.datasets_to_display[selected_dataset]
+        if self.model.datasets[dataset_name].subscans["boundaries"]:
+            for widget in self._subscan_widgets:
+                widget.setDisabled(False)
+            self._subscan_decrement_button.setDisabled(False)
+            self._subscan_increment_button.setDisabled(False)
+        else:
+            for widget in self._subscan_widgets:
+                widget.setDisabled(True)
+            self._subscan_decrement_button.setDisabled(True)
+            self._subscan_increment_button.setDisabled(True)
 
     def _set_widget_properties(self):
         """
@@ -266,6 +290,7 @@ if __name__ == "__main__":
             widget = DatasetDisplayWidget()
             dataset_names = ["/foo/bar/bla.blub", "/foo/bar/foobar.blub"]
             widget.model.datasets_to_display = dataset_names
+            # noinspection PyProtectedMember
             widget._update_ui()
             self.setCentralWidget(widget)
             self.show()
