@@ -54,9 +54,9 @@ class TestDatasetDisplayWidget(unittest.TestCase):
     def test_axes_comboboxes_show_axes_of_selected_dataset(self):
         dataset_names = ["/foo/bar/bla.blub", "/foo/bar/foobar.blub"]
         self.widget.model.datasets_to_display = dataset_names
-        self.widget._dataset_combobox.setModelColumn(1)
-        axes = self.widget.model.datasets[dataset_names[1]].devices
         self.widget._update_ui()
+        self.widget._dataset_combobox.setCurrentIndex(1)
+        axes = self.widget.model.datasets[dataset_names[1]].devices
         self.assertListEqual(
             axes,
             [

@@ -118,20 +118,34 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         This is the once central place taking care of updating all the
         user-facing elements of the widget.
         """
+        self._update_dataset_combobox()
+        self._update_axes_comboboxes()
+
+    def _update_dataset_combobox(self):
         dataset_labels = [
             self.model.datasets[dataset].label
             for dataset in self.model.datasets_to_display
         ]
-        self._dataset_combobox.addItems(dataset_labels)
+        combobox_items = [
+            self._dataset_combobox.itemText(idx)
+            for idx in range(self._dataset_combobox.count())
+        ]
+        if dataset_labels != combobox_items:
+            self._dataset_combobox.clear()
+            self._dataset_combobox.addItems(dataset_labels)
+
+    def _update_axes_comboboxes(self):
         if self.model.datasets_to_display:
             selected_dataset = self._dataset_combobox.currentIndex()
             dataset_name = self.model.datasets_to_display[selected_dataset]
             axes = self.model.datasets[dataset_name].devices
             preferred = self.model.datasets[dataset_name].preferred_data
+            self._x_axis_combobox.clear()
             self._x_axis_combobox.addItems(axes)
             self._x_axis_combobox.setCurrentIndex(
                 self._x_axis_combobox.findText(preferred[0])
             )
+            self._y_axis_combobox.clear()
             self._y_axis_combobox.addItems(axes)
             self._y_axis_combobox.setCurrentIndex(
                 self._y_axis_combobox.findText(preferred[1])
@@ -241,6 +255,7 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         A requirement is to define all widgets as non-public attributes in
         the class constructor.
         """
+        self._dataset_combobox.currentIndexChanged.connect(self._update_ui)
 
 
 if __name__ == "__main__":

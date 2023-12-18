@@ -135,7 +135,7 @@ class DummyImporter(Importer):
 
         """
         super().import_into(dataset=dataset)
-        devices = [self._create_channel_names() for i in range(6)]
+        devices = [self._create_channel_names() for _ in range(6)]
         for device in devices:
             dataset.device_data[device] = self._create_data(
                 channel_name=device
