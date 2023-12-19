@@ -120,6 +120,13 @@ class Model(QtCore.QObject):
     parameter.
     """
 
+    dataset_changed = QtCore.Signal(str)
+    """
+    Signal that should be emitted whenever a dataset changes.
+
+    The signal contains the name of the dataset that has changed.
+    """
+
     def __init__(self):
         super().__init__()
         self.datasets = {}
@@ -127,6 +134,7 @@ class Model(QtCore.QObject):
             callback=self.display_data
         )
         self.figure = None
+        self.dataset_changed.connect(self.display_data)
 
         self._display_mode = "plot"
         self._importer_factory = eveviewer.io.ImporterFactory()
@@ -156,6 +164,7 @@ class Model(QtCore.QObject):
             return
         self._datasets_to_display = datasets
         self.display_data()
+        self.dataset_selection_changed.emit(self._datasets_to_display)
 
     @QtCore.Slot()
     def display_data(self):
@@ -191,7 +200,6 @@ class Model(QtCore.QObject):
         for dataset in self.datasets_to_display:
             if dataset not in self.datasets:
                 self.load_data(dataset)
-        self.dataset_selection_changed.emit(self._datasets_to_display)
         getattr(self, f"{self._display_mode}_data")()
 
     def load_data(self, filename=""):

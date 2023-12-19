@@ -177,3 +177,7 @@ class TestModelSignals(TestCaseUsingQSignals):
             self.model.dataset_selection_changed, datasets
         ):
             self.model.datasets_to_display = datasets
+
+    def test_dataset_changed_signal_can_be_emitted(self):
+        with self.assertSignalReceived(self.model.dataset_changed, ""):
+            self.model.dataset_changed.emit([])

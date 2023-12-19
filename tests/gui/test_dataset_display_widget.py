@@ -123,3 +123,23 @@ class TestDatasetDisplayWidget(unittest.TestCase):
             os.path.split(dataset_name)[1],
             self.widget._dataset_combobox.itemText(0),
         )
+
+    def test_changing_x_axis_combobox_sets_preferred_axis_in_dataset(self):
+        dataset_name = "/foo/bar/bla.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        axes = self.widget.model.datasets[dataset_name].devices
+        self.widget._x_axis_combobox.setCurrentIndex(1)
+        self.assertEqual(
+            self.widget.model.datasets[dataset_name]._preferred_data[0],
+            axes[1],
+        )
+
+    def test_changing_y_axis_combobox_sets_preferred_axis_in_dataset(self):
+        dataset_name = "/foo/bar/bla.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        axes = self.widget.model.datasets[dataset_name].devices
+        self.widget._y_axis_combobox.setCurrentIndex(1)
+        self.assertEqual(
+            self.widget.model.datasets[dataset_name]._preferred_data[1],
+            axes[1],
+        )

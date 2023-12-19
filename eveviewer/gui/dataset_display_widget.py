@@ -309,6 +309,26 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         self._dataset_combobox.currentIndexChanged.connect(
             self._update_axes_and_subscans
         )
+        self._x_axis_combobox.currentIndexChanged.connect(
+            self._set_dataset_preferred_data
+        )
+        self._y_axis_combobox.currentIndexChanged.connect(
+            self._set_dataset_preferred_data
+        )
+
+    def _set_dataset_preferred_data(self):
+        dataset = self._model.datasets_to_display[
+            self._dataset_combobox.currentIndex()
+        ]
+        x_axis = self._x_axis_combobox.currentText()
+        y_axis = self._y_axis_combobox.currentText()
+        devices = self.model.datasets[dataset].devices
+        if x_axis and y_axis and x_axis in devices and y_axis in devices:
+            self.model.datasets[dataset].preferred_data = [
+                self._x_axis_combobox.currentText(),
+                self._y_axis_combobox.currentText(),
+            ]
+            self.model.dataset_changed.emit(dataset)
 
 
 if __name__ == "__main__":
