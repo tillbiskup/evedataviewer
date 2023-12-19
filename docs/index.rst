@@ -17,7 +17,7 @@ This will open the eveviewer GUI and get you started.
 .. figure:: images/eveviewer-screenshot.png
    :align: center
 
-   Screenshot of the eveviewer GUI with a dataset loaded. The central element is the graphical display of the data, while the file browser allows for conveniently browsing directories and files and selecting (multiple) datasets to be displayed.
+   Screenshot of the eveviewer GUI with a dataset loaded. The central element is the graphical display of the data, while the file browser allows for conveniently browsing directories and files and selecting (multiple) datasets to be displayed. On the right you can see a dockable widget for display settings.
 
 
 Features
