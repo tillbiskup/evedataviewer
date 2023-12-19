@@ -47,7 +47,7 @@ dockable window (preferable) or fixed in the layout.
 from PySide6 import QtWidgets, QtCore
 import qtbricks.utils
 
-from eveviewer.gui import model
+from eveviewer.gui import model as gui_model
 
 
 # pylint: disable=too-many-instance-attributes
@@ -59,23 +59,15 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
     For each individual dataset, the axes and data to be displayed need to be
     changeable. Furthermore, depending on the dataset, displaying and
     flicking through sub-scans should be possible as well.
-
-
-    Attributes
-    ----------
-    model : :class:`eveviewer.gui.model.Model`
-        Model of the Model--View architecture used by the widget
-
-    cls.signal_name : :class:`QtCore.Signal`
-        Signal emitted when ...
-
     """
 
     def __init__(self):
         super().__init__()
 
-        self.model = model.Model()
-        self.model.dataset_selection_changed.connect(self._update_ui)
+        self._model = gui_model.Model()
+        self._model.dataset_selection_changed.connect(
+            self._update_ui, QtCore.Qt.UniqueConnection
+        )
 
         # Define all UI elements (widgets) here as non-public attributes
         self._dataset_combobox = QtWidgets.QComboBox()
@@ -98,6 +90,36 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
 
         self._setup_ui()
         self._update_ui()
+
+    @property
+    def model(self):
+        # noinspection PyUnresolvedReferences
+        """
+        Model of the Model--View architecture used by the widget.
+
+        When setting the model, the
+        :attr:`eveviewer.gui.model.Model.dataset_selection_changed` signal is
+        connected to the widget update method.
+
+        Parameters
+        ----------
+        model : :class:`eveviewer.gui.model.Model`
+            The model used by the widget.
+
+        Returns
+        -------
+        model : :class:`eveviewer.gui.model.Model`
+            The model used by the widget.
+
+        """
+        return self._model
+
+    @model.setter
+    def model(self, model=None):
+        self._model = model
+        self._model.dataset_selection_changed.connect(
+            self._update_ui, QtCore.Qt.UniqueConnection
+        )
 
     def _setup_ui(self):
         """
@@ -175,6 +197,10 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
                 widget.setDisabled(True)
             self._subscan_decrement_button.setDisabled(True)
             self._subscan_increment_button.setDisabled(True)
+
+    def _update_axes_and_subscans(self):
+        self._update_axes_comboboxes()
+        self._update_subscan_widgets()
 
     def _set_widget_properties(self):
         """
@@ -280,7 +306,9 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         A requirement is to define all widgets as non-public attributes in
         the class constructor.
         """
-        self._dataset_combobox.currentIndexChanged.connect(self._update_ui)
+        self._dataset_combobox.currentIndexChanged.connect(
+            self._update_axes_and_subscans
+        )
 
 
 if __name__ == "__main__":

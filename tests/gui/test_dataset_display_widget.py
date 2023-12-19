@@ -3,7 +3,7 @@ import unittest
 
 from PySide6 import QtCore, QtWidgets
 
-from eveviewer.gui import dataset_display_widget
+from eveviewer.gui import dataset_display_widget, model
 
 
 class TestDatasetDisplayWidget(unittest.TestCase):
@@ -114,3 +114,12 @@ class TestDatasetDisplayWidget(unittest.TestCase):
         self.widget._update_ui()  # TODO: Replace with signal if possible
         for widget in self.widget._subscan_widgets:
             self.assertTrue(widget.isEnabled())
+
+    def test_changing_model_still_updates_widget(self):
+        self.widget.model = model.Model()
+        dataset_name = "/foo/bar/bla.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        self.assertEqual(
+            os.path.split(dataset_name)[1],
+            self.widget._dataset_combobox.itemText(0),
+        )

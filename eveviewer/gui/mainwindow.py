@@ -113,7 +113,7 @@ import qtbricks.filebrowser
 import qtbricks.mainwindow
 import qtbricks.plot
 
-from eveviewer.gui import model
+from eveviewer.gui import model, dataset_display_widget
 
 
 class MainWindow(qtbricks.mainwindow.MainWindow):
@@ -153,12 +153,14 @@ class MainWindow(qtbricks.mainwindow.MainWindow):
             "filter_disables": False,
         }
         self.plot = qtbricks.plot.Plot()
+        self.dataset_display = dataset_display_widget.DatasetDisplayWidget()
         # Needs to appear after the central widgets, but before the model
         super().__init__()
         self.setMinimumSize(QtCore.QSize(1000, 600))
         self.model = model.Model()
         self.model.figure = self.plot.figure
         self.file_browser.selection_changed.connect(self._update_model)
+        self.dataset_display.model = self.model
 
     def _create_central_widget(self):
         splitter = QtWidgets.QSplitter()
@@ -168,3 +170,12 @@ class MainWindow(qtbricks.mainwindow.MainWindow):
 
     def _update_model(self, datasets):
         self.model.datasets_to_display = list(datasets)
+
+    def _create_dock_windows(self):
+        dataset_display_dock = qtbricks.mainwindow.GeneralDockWindow(
+            title="Dataset display",
+            widget=self.dataset_display,
+            object_name="dataset_display",
+        )
+        dataset_display_dock.setAllowedAreas(QtCore.Qt.RightDockWidgetArea)
+        self._add_dock_window(dock_window=dataset_display_dock)
