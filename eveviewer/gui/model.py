@@ -157,9 +157,14 @@ class Model(QtCore.QObject):
         self._datasets_to_display = datasets
         self.display_data()
 
+    @QtCore.Slot()
     def display_data(self):
         """
         Display the datasets listed as to be displayed.
+
+        This method is a Qt slot events can be connected to. Hence,
+        a GUI widget changing the state of the model or datasets contained
+        therein usually connects to this slot.
 
         Which kind of display will be used depends on the state of the
         internal property :attr:`_display_mode`. Thus, you can easily set/add
