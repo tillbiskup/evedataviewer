@@ -25,7 +25,6 @@ class TestDatasetDisplayWidget(unittest.TestCase):
     def test_dataset_in_model_appears_in_combobox(self):
         dataset_name = "/foo/bar/bla.blub"
         self.widget.model.datasets_to_display = [dataset_name]
-        self.widget._update_ui()
         self.assertEqual(
             os.path.split(dataset_name)[1],
             self.widget._dataset_combobox.itemText(0),
@@ -35,7 +34,6 @@ class TestDatasetDisplayWidget(unittest.TestCase):
         dataset_name = "/foo/bar/bla.blub"
         self.widget.model.datasets_to_display = [dataset_name]
         axes = self.widget.model.datasets[dataset_name].devices
-        self.widget._update_ui()
         self.assertListEqual(
             axes,
             [
@@ -54,7 +52,6 @@ class TestDatasetDisplayWidget(unittest.TestCase):
     def test_axes_comboboxes_show_axes_of_selected_dataset(self):
         dataset_names = ["/foo/bar/bla.blub", "/foo/bar/foobar.blub"]
         self.widget.model.datasets_to_display = dataset_names
-        self.widget._update_ui()
         self.widget._dataset_combobox.setCurrentIndex(1)
         axes = self.widget.model.datasets[dataset_names[1]].devices
         self.assertListEqual(
@@ -76,7 +73,6 @@ class TestDatasetDisplayWidget(unittest.TestCase):
         dataset_name = "/foo/bar/bla.blub"
         self.widget.model.datasets_to_display = [dataset_name]
         axes = self.widget.model.datasets[dataset_name].preferred_data
-        self.widget._update_ui()
         self.assertEqual(
             axes[0],
             self.widget._x_axis_combobox.itemText(
@@ -94,7 +90,6 @@ class TestDatasetDisplayWidget(unittest.TestCase):
         dataset_name = "/foo/bar/bla.blub"
         self.widget.model.datasets_to_display = [dataset_name]
         self.widget.model.datasets[dataset_name].subscans["boundaries"] = []
-        self.widget._update_ui()
         for widget in self.widget._subscan_widgets:
             self.assertFalse(widget.isEnabled())
 
@@ -105,18 +100,17 @@ class TestDatasetDisplayWidget(unittest.TestCase):
             0,
             42,
         ]
-        self.widget._update_ui()
+        self.widget._update_ui()  # TODO: Replace with signal if possible
         for widget in self.widget._subscan_widgets:
             self.assertTrue(widget.isEnabled())
 
     def test_subscans_widgets_are_reenabled_if_dataset_has_subscans(self):
         dataset_name = "/foo/bar/bla.blub"
         self.widget.model.datasets_to_display = [dataset_name]
-        self.widget._update_ui()
         self.widget.model.datasets[dataset_name].subscans["boundaries"] = [
             0,
             42,
         ]
-        self.widget._update_ui()
+        self.widget._update_ui()  # TODO: Replace with signal if possible
         for widget in self.widget._subscan_widgets:
             self.assertTrue(widget.isEnabled())

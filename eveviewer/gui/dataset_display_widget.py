@@ -75,6 +75,7 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         super().__init__()
 
         self.model = model.Model()
+        self.model.dataset_selection_changed.connect(self._update_ui)
 
         # Define all UI elements (widgets) here as non-public attributes
         self._dataset_combobox = QtWidgets.QComboBox()
