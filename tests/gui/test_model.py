@@ -1,9 +1,66 @@
 import unittest
 
 import matplotlib.pyplot as plt
+from PySide6.QtWidgets import QApplication
 
 import eveviewer.dataset
 from eveviewer.gui import model as gui_model
+
+
+class SignalReceiver:
+    """
+    Context manager class detecting whether a QSignal has been emitted.
+
+    Adapted from https://stackoverflow.com/a/48128768
+    """
+
+    def __init__(self, test, signal, *args):
+        self.test = test
+        self.signal = signal
+        self.called = False
+        self.expected_args = args
+        self.actual_args = None
+
+    def slot(self, *args):
+        self.actual_args = args
+        self.called = True
+
+    def __enter__(self):
+        self.signal.connect(self.slot)
+
+    def __exit__(self, e, msg, traceback):
+        if e:
+            raise e(msg)
+        self.test.assertTrue(self.called, "Signal not called!")
+        self.test.assertEqual(
+            self.expected_args,
+            self.actual_args,
+            f"""Signal arguments don't match!
+            actual:   {self.actual_args}
+            expected: {self.expected_args}""",
+        )
+
+
+class TestCaseUsingQSignals(unittest.TestCase):
+    """
+    Test class for testing whether a QSignal has been emitted.
+
+    Adapted from https://stackoverflow.com/a/48128768
+    """
+
+    def setUp(self):
+        """Create the QApplication instance"""
+        _instance = QApplication.instance()
+        if not _instance:
+            _instance = QApplication([])
+        self.app = _instance
+
+    def tearDown(self):
+        """Delete the reference owned by self"""
+        del self.app
+
+    def assertSignalReceived(self, signal, args):
+        return SignalReceiver(self, signal, args)
 
 
 class TestModel(unittest.TestCase):
@@ -101,3 +158,22 @@ class TestModel(unittest.TestCase):
         mock.method_called = False
         mock.datasets_to_display = ["foo"]
         self.assertFalse(mock.method_called)
+
+
+class TestModelSignals(TestCaseUsingQSignals):
+    def setUp(self):
+        super().setUp()
+        self.model = gui_model.Model()
+
+    def test_dataset_selection_changed_signal_can_be_emitted(self):
+        with self.assertSignalReceived(
+            self.model.dataset_selection_changed, []
+        ):
+            self.model.dataset_selection_changed.emit([])
+
+    def test_change_in_datasets_emits_signal(self):
+        datasets = ["foo.bla", "bar.blub"]
+        with self.assertSignalReceived(
+            self.model.dataset_selection_changed, datasets
+        ):
+            self.model.datasets_to_display = datasets

@@ -73,12 +73,14 @@ Module documentation
 
 """
 
+from PySide6 import QtCore
+
 import eveviewer.dataset
 import eveviewer.io
 from eveviewer import utils
 
 
-class Model:
+class Model(QtCore.QObject):
     """
     Model for the eveviewer application.
 
@@ -110,7 +112,16 @@ class Model:
 
     """
 
+    dataset_selection_changed = QtCore.Signal(list)
+    """
+    Signal emitted when the selection of datasets changed.
+
+    The signal contains the names of the selected datasets as :class:`list` 
+    parameter.
+    """
+
     def __init__(self):
+        super().__init__()
         self.datasets = {}
         self._datasets_to_display = utils.NotifyingList(
             callback=self.display_data
@@ -175,6 +186,7 @@ class Model:
         for dataset in self.datasets_to_display:
             if dataset not in self.datasets:
                 self.load_data(dataset)
+        self.dataset_selection_changed.emit(self._datasets_to_display)
         getattr(self, f"{self._display_mode}_data")()
 
     def load_data(self, filename=""):
