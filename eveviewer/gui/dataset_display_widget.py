@@ -183,6 +183,9 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
             self._y_axis_combobox.setCurrentIndex(
                 self._y_axis_combobox.findText(preferred[1])
             )
+        else:
+            self._x_axis_combobox.clear()
+            self._y_axis_combobox.clear()
 
     def _update_subscan_widgets(self):
         selected_dataset = self._dataset_combobox.currentIndex()
@@ -336,6 +339,8 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         )
 
     def _set_dataset_preferred_data(self):
+        if not self._model.datasets_to_display:
+            return
         dataset = self._model.datasets_to_display[
             self._dataset_combobox.currentIndex()
         ]

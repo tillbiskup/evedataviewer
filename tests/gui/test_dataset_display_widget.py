@@ -95,24 +95,17 @@ class TestDatasetDisplayWidget(unittest.TestCase):
             self.assertFalse(widget.isEnabled())
 
     def test_subscans_widgets_are_enabled_if_dataset_has_subscans(self):
-        dataset_name = "/foo/bar/bla.blub"
+        # Convention from DummyImporter: __init__ in filename creates subscans
+        dataset_name = "/foo/bar/__init__.blub"
         self.widget.model.datasets_to_display = [dataset_name]
-        self.widget.model.datasets[dataset_name].subscans["boundaries"] = [
-            0,
-            42,
-        ]
-        self.widget._update_ui()  # TODO: Replace with signal if possible
         for widget in self.widget._subscan_widgets:
             self.assertTrue(widget.isEnabled())
 
     def test_subscans_widgets_are_reenabled_if_dataset_has_subscans(self):
-        dataset_name = "/foo/bar/bla.blub"
-        self.widget.model.datasets_to_display = [dataset_name]
-        self.widget.model.datasets[dataset_name].subscans["boundaries"] = [
-            0,
-            42,
-        ]
-        self.widget._update_ui()  # TODO: Replace with signal if possible
+        # Convention from DummyImporter: __init__ in filename creates subscans
+        dataset_names = ["/foo/bar/bla.blub", "/foo/bar/__init__.blub"]
+        self.widget.model.datasets_to_display = [dataset_names[0]]
+        self.widget.model.datasets_to_display = [dataset_names[1]]
         for widget in self.widget._subscan_widgets:
             self.assertTrue(widget.isEnabled())
 
@@ -162,3 +155,17 @@ class TestDatasetDisplayWidget(unittest.TestCase):
             ax.get_yscale(),
             self.widget._y_axis_scale_combobox.currentText(),
         )
+
+    def test_deselecting_any_dataset_clears_x_axis_combobox(self):
+        dataset_name = "/foo/bar/bla.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        self.assertTrue(self.widget._x_axis_combobox.currentText())
+        self.widget.model.datasets_to_display = []
+        self.assertFalse(self.widget._x_axis_combobox.currentText())
+
+    def test_deselecting_any_dataset_clears_y_axis_combobox(self):
+        dataset_name = "/foo/bar/bla.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        self.assertTrue(self.widget._y_axis_combobox.currentText())
+        self.widget.model.datasets_to_display = []
+        self.assertFalse(self.widget._y_axis_combobox.currentText())
