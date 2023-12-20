@@ -2,7 +2,7 @@ import os
 import unittest
 
 import matplotlib.pyplot as plt
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets, QtTest
 
 from eveviewer.gui import dataset_display_widget, model
 
@@ -108,6 +108,59 @@ class TestDatasetDisplayWidget(unittest.TestCase):
         self.widget.model.datasets_to_display = [dataset_names[1]]
         for widget in self.widget._subscan_widgets:
             self.assertTrue(widget.isEnabled())
+
+    def test_subscans_widgets_display_number_of_total_subscans(self):
+        # Convention from DummyImporter: __init__ in filename creates subscans
+        dataset_name = "/foo/bar/__init__.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        n_subscans = len(
+            self.widget.model.datasets[dataset_name].subscans["boundaries"]
+        )
+        self.assertEqual(
+            str(n_subscans),
+            self.widget._subscan_number_label.text(),
+        )
+
+    def test_changing_back_to_dataset_wo_subscans_resets_subscan_widgets(
+        self,
+    ):
+        # Convention from DummyImporter: __init__ in filename creates subscans
+        dataset_names = ["/foo/bar/__init__.blub", "/foo/bar/bla.blub"]
+        self.widget.model.datasets_to_display = [dataset_names[0]]
+        self.widget.model.datasets_to_display = [dataset_names[1]]
+        self.assertEqual("0", self.widget._subscan_number_label.text())
+
+    def test_subscans_edit_validator_has_correct_upper_limit(self):
+        # Convention from DummyImporter: __init__ in filename creates subscans
+        dataset_name = "/foo/bar/__init__.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        n_subscans = len(
+            self.widget.model.datasets[dataset_name].subscans["boundaries"]
+        )
+        self.assertEqual(
+            n_subscans,
+            self.widget._subscan_current_edit.validator().top(),
+        )
+
+    def test_subscan_edit_set_beyond_upper_limit_sets_to_upper_limit(self):
+        # Convention from DummyImporter: __init__ in filename creates subscans
+        dataset_name = "/foo/bar/__init__.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        n_subscans = len(
+            self.widget.model.datasets[dataset_name].subscans["boundaries"]
+        )
+        self.widget._subscan_current_edit.clear()
+        QtTest.QTest.keyClicks(
+            self.widget._subscan_current_edit, str(n_subscans + 1)
+        )
+        # Important: Only on pressing "Return" the validator will be called.
+        QtTest.QTest.keyPress(
+            self.widget._subscan_current_edit, QtCore.Qt.Key.Key_Return
+        )
+        self.assertEqual(
+            str(n_subscans),
+            self.widget._subscan_current_edit.text(),
+        )
 
     def test_changing_model_still_updates_widget(self):
         self.widget.model = model.Model()

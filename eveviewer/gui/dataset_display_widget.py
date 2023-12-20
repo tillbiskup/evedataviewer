@@ -44,7 +44,7 @@ dockable window (preferable) or fixed in the layout.
 
 """
 
-from PySide6 import QtWidgets, QtCore
+from PySide6 import QtWidgets, QtCore, QtGui
 import qtbricks.utils
 
 from eveviewer.gui import model as gui_model
@@ -80,7 +80,7 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         self._y_axis_label = QtWidgets.QLabel()
         self._subscan_decrement_button = QtWidgets.QPushButton()
         self._subscan_increment_button = QtWidgets.QPushButton()
-        self._subscan_current_edit = QtWidgets.QLineEdit("-1")
+        self._subscan_current_edit = QtWidgets.QLineEdit("0")
         self._subscan_number_label = QtWidgets.QLabel("0")
         self._subscan_label = QtWidgets.QLabel()
 
@@ -197,11 +197,17 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
                 widget.setDisabled(False)
             self._subscan_decrement_button.setDisabled(False)
             self._subscan_increment_button.setDisabled(False)
+            n_subscans = len(
+                self.model.datasets[dataset_name].subscans["boundaries"]
+            )
+            self._subscan_number_label.setText(str(n_subscans))
+            self._subscan_current_edit.validator().setTop(n_subscans)
         else:
             for widget in self._subscan_widgets:
                 widget.setDisabled(True)
             self._subscan_decrement_button.setDisabled(True)
             self._subscan_increment_button.setDisabled(True)
+            self._subscan_number_label.setText("0")
 
     def _update_axes_and_subscans(self):
         self._update_axes_comboboxes()
@@ -274,6 +280,8 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
             self._y_axis_combobox.sizeHint().height(),
         )
         self._subscan_current_edit.setAlignment(QtCore.Qt.AlignRight)
+        validator = IntValidator(0, 999)  # QtGui.QIntValidator(0, 999)
+        self._subscan_current_edit.setValidator(validator)
         self._subscan_label.setText("Sub-scans:")
         self._subscan_label.setObjectName("subscan_label")
 
@@ -359,6 +367,13 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         axes.set_xscale(self._x_axis_scale_combobox.currentText())
         axes.set_yscale(self._y_axis_scale_combobox.currentText())
         self.model.plot_changed.emit()
+
+
+class IntValidator(QtGui.QIntValidator):
+    def fixup(self, input_):
+        if int(input_) > self.top():
+            input_ = str(self.top())
+        return input_
 
 
 if __name__ == "__main__":
