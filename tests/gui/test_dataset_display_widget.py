@@ -1,6 +1,7 @@
 import os
 import unittest
 
+import matplotlib.pyplot as plt
 from PySide6 import QtCore, QtWidgets
 
 from eveviewer.gui import dataset_display_widget, model
@@ -142,4 +143,22 @@ class TestDatasetDisplayWidget(unittest.TestCase):
         self.assertEqual(
             self.widget.model.datasets[dataset_name]._preferred_data[1],
             axes[1],
+        )
+
+    def test_changing_x_axis_scale_combobox_sets_axis_scale(self):
+        fig, ax = plt.subplots()
+        self.widget.model.figure = fig
+        self.widget._x_axis_scale_combobox.setCurrentIndex(1)
+        self.assertEqual(
+            ax.get_xscale(),
+            self.widget._x_axis_scale_combobox.currentText(),
+        )
+
+    def test_changing_y_axis_scale_combobox_sets_axis_scale(self):
+        fig, ax = plt.subplots()
+        self.widget.model.figure = fig
+        self.widget._y_axis_scale_combobox.setCurrentIndex(1)
+        self.assertEqual(
+            ax.get_yscale(),
+            self.widget._y_axis_scale_combobox.currentText(),
         )

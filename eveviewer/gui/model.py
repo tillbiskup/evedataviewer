@@ -127,6 +127,11 @@ class Model(QtCore.QObject):
     The signal contains the name of the dataset that has changed.
     """
 
+    plot_changed = QtCore.Signal()
+    """
+    Signal that should be emitted whenever the plot or its properties change.
+    """
+
     def __init__(self):
         super().__init__()
         self.datasets = {}
@@ -135,6 +140,7 @@ class Model(QtCore.QObject):
         )
         self.figure = None
         self.dataset_changed.connect(self.display_data)
+        self.plot_changed.connect(self._refresh_plot)
 
         self._display_mode = "plot"
         self._importer_factory = eveviewer.io.ImporterFactory()
@@ -243,6 +249,10 @@ class Model(QtCore.QObject):
         for dataset in self.datasets_to_display:
             self.datasets[dataset].plot(figure=self.figure)
         self.figure.canvas.draw_idle()
+
+    def _refresh_plot(self):
+        if self.figure:
+            self.figure.canvas.draw_idle()
 
 
 if __name__ == "__main__":

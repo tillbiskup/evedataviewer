@@ -73,8 +73,10 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         self._dataset_combobox = QtWidgets.QComboBox()
         self._dataset_label = QtWidgets.QLabel()
         self._x_axis_combobox = QtWidgets.QComboBox()
+        self._x_axis_scale_combobox = QtWidgets.QComboBox()
         self._x_axis_label = QtWidgets.QLabel()
         self._y_axis_combobox = QtWidgets.QComboBox()
+        self._y_axis_scale_combobox = QtWidgets.QComboBox()
         self._y_axis_label = QtWidgets.QLabel()
         self._subscan_decrement_button = QtWidgets.QPushButton()
         self._subscan_increment_button = QtWidgets.QPushButton()
@@ -225,11 +227,20 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         self._x_axis_label.setObjectName("x_axis_label")
         self._x_axis_label.setBuddy(self._x_axis_combobox)
 
+        self._x_axis_scale_combobox.setObjectName("x_axis_scale_combobox")
+        self._x_axis_scale_combobox.setToolTip("Set x axis scale of dataset")
+        axis_scales = ["linear", "log", "symlog", "logit"]
+        self._x_axis_scale_combobox.addItems(axis_scales)
+
         self._y_axis_combobox.setObjectName("y_axis_combobox")
         self._y_axis_combobox.setToolTip("Set y axis of dataset")
         self._y_axis_label.setText("y axis:")
         self._y_axis_label.setObjectName("y_axis_label")
         self._y_axis_label.setBuddy(self._y_axis_combobox)
+
+        self._y_axis_scale_combobox.setObjectName("x_axis_scale_combobox")
+        self._y_axis_scale_combobox.setToolTip("Set x axis scale of dataset")
+        self._y_axis_scale_combobox.addItems(axis_scales)
 
         self._subscan_decrement_button = qtbricks.utils.create_button(
             text="",
@@ -279,8 +290,10 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         top_layout.addWidget(self._dataset_combobox, 0, 1)
         top_layout.addWidget(self._x_axis_label, 1, 0)
         top_layout.addWidget(self._x_axis_combobox, 1, 1)
-        top_layout.addWidget(self._y_axis_label, 2, 0)
-        top_layout.addWidget(self._y_axis_combobox, 2, 1)
+        top_layout.addWidget(self._x_axis_scale_combobox, 2, 1)
+        top_layout.addWidget(self._y_axis_label, 3, 0)
+        top_layout.addWidget(self._y_axis_combobox, 3, 1)
+        top_layout.addWidget(self._y_axis_scale_combobox, 4, 1)
         subscans_layout = QtWidgets.QHBoxLayout()
         subscans_layout.addWidget(self._subscan_decrement_button)
         subscans_layout.addWidget(self._subscan_increment_button)
@@ -288,8 +301,8 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         subscans_layout.addWidget(QtWidgets.QLabel("/"))
         subscans_layout.addWidget(self._subscan_number_label)
         subscans_layout.addStretch(1)
-        top_layout.addWidget(self._subscan_label, 3, 0)
-        top_layout.addLayout(subscans_layout, 3, 1)
+        top_layout.addWidget(self._subscan_label, 5, 0)
+        top_layout.addLayout(subscans_layout, 5, 1)
         layout = QtWidgets.QVBoxLayout()
         layout.addLayout(top_layout)
         layout.addStretch(1)
@@ -315,6 +328,12 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         self._y_axis_combobox.currentIndexChanged.connect(
             self._set_dataset_preferred_data
         )
+        self._x_axis_scale_combobox.currentIndexChanged.connect(
+            self._set_axes_scale
+        )
+        self._y_axis_scale_combobox.currentIndexChanged.connect(
+            self._set_axes_scale
+        )
 
     def _set_dataset_preferred_data(self):
         dataset = self._model.datasets_to_display[
@@ -329,6 +348,12 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
                 self._y_axis_combobox.currentText(),
             ]
             self.model.dataset_changed.emit(dataset)
+
+    def _set_axes_scale(self):
+        axes = self.model.figure.axes[0]
+        axes.set_xscale(self._x_axis_scale_combobox.currentText())
+        axes.set_yscale(self._y_axis_scale_combobox.currentText())
+        self.model.plot_changed.emit()
 
 
 if __name__ == "__main__":
