@@ -146,6 +146,12 @@ class DummyImporter(Importer):
         pos_counter_data.axes[1].unit = pos_counter_data.axes[0].unit
         dataset.device_data["PosCounter"] = pos_counter_data
         dataset.preferred_data = ["PosCounter", devices[0]]
+        if "__init__" in self.source:
+            splits = np.linspace(0, len(pos_counter_data.data), 5)
+            dataset.subscans["boundaries"] = [
+                [splits[0:-1][i], splits[1:][i]]
+                for i, _ in enumerate(splits[0:-1])
+            ]
 
     @staticmethod
     def _create_channel_names():
