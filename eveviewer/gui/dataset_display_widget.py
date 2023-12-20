@@ -280,7 +280,7 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
             self._y_axis_combobox.sizeHint().height(),
         )
         self._subscan_current_edit.setAlignment(QtCore.Qt.AlignRight)
-        validator = IntValidator(0, 999)  # QtGui.QIntValidator(0, 999)
+        validator = qtbricks.utils.IntValidator(0, 999)
         self._subscan_current_edit.setValidator(validator)
         self._subscan_label.setText("Sub-scans:")
         self._subscan_label.setObjectName("subscan_label")
@@ -367,13 +367,6 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         axes.set_xscale(self._x_axis_scale_combobox.currentText())
         axes.set_yscale(self._y_axis_scale_combobox.currentText())
         self.model.plot_changed.emit()
-
-
-class IntValidator(QtGui.QIntValidator):
-    def fixup(self, input_):
-        if int(input_) > self.top():
-            input_ = str(self.top())
-        return input_
 
 
 if __name__ == "__main__":
