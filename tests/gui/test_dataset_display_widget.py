@@ -162,6 +162,45 @@ class TestDatasetDisplayWidget(unittest.TestCase):
             self.widget._subscan_current_edit.text(),
         )
 
+    def test_subscan_edit_sets_current_subscan_in_dataset(self):
+        # Convention from DummyImporter: __init__ in filename creates subscans
+        dataset_name = "/foo/bar/__init__.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        self.widget._subscan_current_edit.clear()
+        QtTest.QTest.keyClicks(self.widget._subscan_current_edit, "1")
+        # Important: Only on pressing "Return" the validator will be called.
+        QtTest.QTest.keyPress(
+            self.widget._subscan_current_edit, QtCore.Qt.Key.Key_Return
+        )
+        # Important: Offset of 1, as "-1" means temporarily disable subscans.
+        self.assertEqual(
+            int(self.widget._subscan_current_edit.text()) - 1,
+            self.widget.model.datasets[dataset_name].subscans["current"],
+        )
+
+    def test_subscan_decrement_button_disabled_when_subscans_zero(self):
+        # Convention from DummyImporter: __init__ in filename creates subscans
+        dataset_name = "/foo/bar/__init__.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        self.assertFalse(self.widget._subscan_decrement_button.isEnabled())
+
+    def test_subscan_increment_button_disabled_when_subscans_max(self):
+        # Convention from DummyImporter: __init__ in filename creates subscans
+        dataset_name = "/foo/bar/__init__.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        n_subscans = len(
+            self.widget.model.datasets[dataset_name].subscans["boundaries"]
+        )
+        self.widget._subscan_current_edit.clear()
+        QtTest.QTest.keyClicks(
+            self.widget._subscan_current_edit, str(n_subscans)
+        )
+        # Important: Only on pressing "Return" the validator will be called.
+        QtTest.QTest.keyPress(
+            self.widget._subscan_current_edit, QtCore.Qt.Key.Key_Return
+        )
+        self.assertFalse(self.widget._subscan_increment_button.isEnabled())
+
     def test_changing_model_still_updates_widget(self):
         self.widget.model = model.Model()
         dataset_name = "/foo/bar/bla.blub"

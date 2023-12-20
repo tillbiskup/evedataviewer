@@ -195,13 +195,23 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         if self.model.datasets[dataset_name].subscans["boundaries"]:
             for widget in self._subscan_widgets:
                 widget.setDisabled(False)
-            self._subscan_decrement_button.setDisabled(False)
-            self._subscan_increment_button.setDisabled(False)
+            if self._subscan_current_edit.text() == "0":
+                self._subscan_decrement_button.setDisabled(True)
+            else:
+                self._subscan_decrement_button.setDisabled(False)
             n_subscans = len(
                 self.model.datasets[dataset_name].subscans["boundaries"]
             )
+            if self._subscan_current_edit.text() == str(n_subscans):
+                self._subscan_increment_button.setDisabled(True)
+            else:
+                self._subscan_increment_button.setDisabled(False)
             self._subscan_number_label.setText(str(n_subscans))
             self._subscan_current_edit.validator().setTop(n_subscans)
+            self.model.datasets[dataset_name].subscans["current"] = (
+                int(self._subscan_current_edit.text()) - 1
+            )
+            self.model.dataset_changed.emit(dataset_name)
         else:
             for widget in self._subscan_widgets:
                 widget.setDisabled(True)
@@ -344,6 +354,9 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         )
         self._y_axis_scale_combobox.currentIndexChanged.connect(
             self._set_axes_scale
+        )
+        self._subscan_current_edit.editingFinished.connect(
+            self._update_subscan_widgets
         )
 
     def _set_dataset_preferred_data(self):

@@ -1,5 +1,6 @@
 import unittest
 
+import matplotlib.pyplot as plt
 import numpy as np
 
 from eveviewer import dataset as eve_dataset
@@ -134,4 +135,27 @@ class TestDataset(unittest.TestCase):
         np.testing.assert_allclose(
             data.axes[0].values,
             self.dataset.data.axes[0].values,
+        )
+
+    def test_plot_plots_data(self):
+        self.dataset.data.data = np.zeros(10)
+        self.dataset.data.axes[0].values = np.linspace(1, 10, 10)
+        fig, ax = plt.subplots()
+        self.dataset.plot(figure=fig)
+        np.testing.assert_allclose(
+            ax.lines[0].get_ydata(),
+            self.dataset.data.data,
+        )
+
+    def test_plot_with_subscan_plots_subscan(self):
+        self.dataset.data.data = np.zeros(10)
+        self.dataset.data.axes[0].values = np.linspace(1, 10, 10)
+        self.dataset.subscans["boundaries"] = [[0, 5], [5, 10]]
+        self.dataset.subscans["current"] = 0
+        data = self.dataset.subscan
+        fig, ax = plt.subplots()
+        self.dataset.plot(figure=fig)
+        np.testing.assert_allclose(
+            ax.lines[0].get_ydata(),
+            data.data,
         )

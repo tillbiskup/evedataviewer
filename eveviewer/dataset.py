@@ -162,9 +162,14 @@ class Dataset:
             sliced_data = self.data
         else:
             slice_ = slice(
-                *self.subscans["boundaries"][self.subscans["current"]]
+                *[
+                    int(value)
+                    for value in self.subscans["boundaries"][
+                        self.subscans["current"]
+                    ]
+                ]
             )
-            sliced_data = copy.copy(self.data)
+            sliced_data = copy.deepcopy(self.data)
             sliced_data.data = sliced_data.data[slice_]
             sliced_data.axes[0].values = sliced_data.axes[0].values[slice_]
         return sliced_data
@@ -194,9 +199,9 @@ class Dataset:
         if not figure:
             return
         axes = figure.axes[0]
-        axes.plot(self.data.axes[0].values, self.data.data, marker=".")
-        axes.set_xlabel(self.data.axes[0].label)
-        axes.set_ylabel(self.data.axes[1].label)
+        axes.plot(self.subscan.axes[0].values, self.subscan.data, marker=".")
+        axes.set_xlabel(self.subscan.axes[0].label)
+        axes.set_ylabel(self.subscan.axes[1].label)
 
 
 class Data:
