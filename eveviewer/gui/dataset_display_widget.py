@@ -44,7 +44,7 @@ dockable window (preferable) or fixed in the layout.
 
 """
 
-from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6 import QtWidgets, QtCore
 import qtbricks.utils
 
 from eveviewer.gui import model as gui_model
@@ -358,6 +358,12 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         self._subscan_current_edit.editingFinished.connect(
             self._update_subscan_widgets
         )
+        self._subscan_increment_button.pressed.connect(
+            self._increment_current_subscan
+        )
+        self._subscan_decrement_button.pressed.connect(
+            self._decrement_current_subscan
+        )
 
     def _set_dataset_preferred_data(self):
         if not self._model.datasets_to_display:
@@ -380,6 +386,26 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         axes.set_xscale(self._x_axis_scale_combobox.currentText())
         axes.set_yscale(self._y_axis_scale_combobox.currentText())
         self.model.plot_changed.emit()
+
+    def _increment_current_subscan(self):
+        dataset = self._model.datasets_to_display[
+            self._dataset_combobox.currentIndex()
+        ]
+        self.model.datasets[dataset].subscans["current"] += 1
+        self._subscan_current_edit.setText(
+            str(self.model.datasets[dataset].subscans["current"] + 1)
+        )
+        self._update_subscan_widgets()
+
+    def _decrement_current_subscan(self):
+        dataset = self._model.datasets_to_display[
+            self._dataset_combobox.currentIndex()
+        ]
+        self.model.datasets[dataset].subscans["current"] -= 1
+        self._subscan_current_edit.setText(
+            str(self.model.datasets[dataset].subscans["current"] + 1)
+        )
+        self._update_subscan_widgets()
 
 
 if __name__ == "__main__":

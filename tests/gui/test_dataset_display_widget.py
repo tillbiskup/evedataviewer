@@ -201,6 +201,79 @@ class TestDatasetDisplayWidget(unittest.TestCase):
         )
         self.assertFalse(self.widget._subscan_increment_button.isEnabled())
 
+    def test_subscan_increment_button_sets_current_subscan(self):
+        # Convention from DummyImporter: __init__ in filename creates subscans
+        dataset_name = "/foo/bar/__init__.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        QtTest.QTest.mouseClick(
+            self.widget._subscan_increment_button,
+            QtCore.Qt.MouseButton.LeftButton,
+        )
+        # Hint: We start with -1, meaning temporarily disable subscans.
+        self.assertEqual(
+            0,
+            self.widget.model.datasets[dataset_name].subscans["current"],
+        )
+
+    def test_subscan_increment_button_updates_widgets(self):
+        # Convention from DummyImporter: __init__ in filename creates subscans
+        dataset_name = "/foo/bar/__init__.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        QtTest.QTest.mouseClick(
+            self.widget._subscan_increment_button,
+            QtCore.Qt.MouseButton.LeftButton,
+        )
+        self.assertEqual(
+            "1",
+            self.widget._subscan_current_edit.text(),
+        )
+
+    @staticmethod
+    def qtest_enter_text(widget=None, text=""):
+        widget.clear()
+        QtTest.QTest.keyClicks(widget, text)
+        # Important: Only on pressing "Return" the validator will be called.
+        QtTest.QTest.keyPress(widget, QtCore.Qt.Key.Key_Return)
+
+    def test_subscan_decrement_button_sets_current_subscan(self):
+        # Convention from DummyImporter: __init__ in filename creates subscans
+        dataset_name = "/foo/bar/__init__.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        n_subscans = len(
+            self.widget.model.datasets[dataset_name].subscans["boundaries"]
+        )
+        self.qtest_enter_text(
+            widget=self.widget._subscan_current_edit, text=str(n_subscans)
+        )
+        QtTest.QTest.mouseClick(
+            self.widget._subscan_decrement_button,
+            QtCore.Qt.MouseButton.LeftButton,
+        )
+        # Hint: Zero-based indexing only in dataset, not in display
+        self.assertEqual(
+            n_subscans - 2,
+            self.widget.model.datasets[dataset_name].subscans["current"],
+        )
+
+    def test_subscan_decrement_button_updates_widget(self):
+        # Convention from DummyImporter: __init__ in filename creates subscans
+        dataset_name = "/foo/bar/__init__.blub"
+        self.widget.model.datasets_to_display = [dataset_name]
+        n_subscans = len(
+            self.widget.model.datasets[dataset_name].subscans["boundaries"]
+        )
+        self.qtest_enter_text(
+            widget=self.widget._subscan_current_edit, text=str(n_subscans)
+        )
+        QtTest.QTest.mouseClick(
+            self.widget._subscan_decrement_button,
+            QtCore.Qt.MouseButton.LeftButton,
+        )
+        self.assertEqual(
+            str(n_subscans - 1),
+            self.widget._subscan_current_edit.text(),
+        )
+
     def test_changing_model_still_updates_widget(self):
         self.widget.model = model.Model()
         dataset_name = "/foo/bar/bla.blub"

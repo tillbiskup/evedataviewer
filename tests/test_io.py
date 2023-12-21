@@ -76,6 +76,12 @@ class TestDummyImporter(unittest.TestCase):
         self.importer.import_into(self.dataset)
         self.assertTrue(self.dataset.subscans["boundaries"])
 
+    def test_dataset_with_subscans_sets_initial_current_subscan(self):
+        source = "foo/bar/__init__.py"
+        self.importer.source = source
+        self.importer.import_into(self.dataset)
+        self.assertEqual(-1, self.dataset.subscans["current"])
+
 
 class TestEveHDF5Importer(unittest.TestCase):
     path_to_testdata = "/messung/sx700/daten/2023/KW44_23/PTB/00003.h5"
