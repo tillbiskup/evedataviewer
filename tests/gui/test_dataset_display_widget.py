@@ -3,6 +3,7 @@ import unittest
 
 import matplotlib.pyplot as plt
 from PySide6 import QtCore, QtWidgets, QtTest
+import qtbricks.testing
 
 from eveviewer.gui import dataset_display_widget, model
 
@@ -149,13 +150,8 @@ class TestDatasetDisplayWidget(unittest.TestCase):
         n_subscans = len(
             self.widget.model.datasets[dataset_name].subscans["boundaries"]
         )
-        self.widget._subscan_current_edit.clear()
-        QtTest.QTest.keyClicks(
-            self.widget._subscan_current_edit, str(n_subscans + 1)
-        )
-        # Important: Only on pressing "Return" the validator will be called.
-        QtTest.QTest.keyPress(
-            self.widget._subscan_current_edit, QtCore.Qt.Key.Key_Return
+        qtbricks.testing.qtest_enter_text(
+            widget=self.widget._subscan_current_edit, text=str(n_subscans + 1)
         )
         self.assertEqual(
             str(n_subscans),
@@ -166,11 +162,8 @@ class TestDatasetDisplayWidget(unittest.TestCase):
         # Convention from DummyImporter: __init__ in filename creates subscans
         dataset_name = "/foo/bar/__init__.blub"
         self.widget.model.datasets_to_display = [dataset_name]
-        self.widget._subscan_current_edit.clear()
-        QtTest.QTest.keyClicks(self.widget._subscan_current_edit, "1")
-        # Important: Only on pressing "Return" the validator will be called.
-        QtTest.QTest.keyPress(
-            self.widget._subscan_current_edit, QtCore.Qt.Key.Key_Return
+        qtbricks.testing.qtest_enter_text(
+            widget=self.widget._subscan_current_edit, text="1"
         )
         # Important: Offset of 1, as "-1" means temporarily disable subscans.
         self.assertEqual(
@@ -191,13 +184,9 @@ class TestDatasetDisplayWidget(unittest.TestCase):
         n_subscans = len(
             self.widget.model.datasets[dataset_name].subscans["boundaries"]
         )
-        self.widget._subscan_current_edit.clear()
-        QtTest.QTest.keyClicks(
-            self.widget._subscan_current_edit, str(n_subscans)
-        )
-        # Important: Only on pressing "Return" the validator will be called.
-        QtTest.QTest.keyPress(
-            self.widget._subscan_current_edit, QtCore.Qt.Key.Key_Return
+        qtbricks.testing.qtest_enter_text(
+            widget=self.widget._subscan_current_edit,
+            text=str(n_subscans),
         )
         self.assertFalse(self.widget._subscan_increment_button.isEnabled())
 
@@ -228,13 +217,6 @@ class TestDatasetDisplayWidget(unittest.TestCase):
             self.widget._subscan_current_edit.text(),
         )
 
-    @staticmethod
-    def qtest_enter_text(widget=None, text=""):
-        widget.clear()
-        QtTest.QTest.keyClicks(widget, text)
-        # Important: Only on pressing "Return" the validator will be called.
-        QtTest.QTest.keyPress(widget, QtCore.Qt.Key.Key_Return)
-
     def test_subscan_decrement_button_sets_current_subscan(self):
         # Convention from DummyImporter: __init__ in filename creates subscans
         dataset_name = "/foo/bar/__init__.blub"
@@ -242,7 +224,7 @@ class TestDatasetDisplayWidget(unittest.TestCase):
         n_subscans = len(
             self.widget.model.datasets[dataset_name].subscans["boundaries"]
         )
-        self.qtest_enter_text(
+        qtbricks.testing.qtest_enter_text(
             widget=self.widget._subscan_current_edit, text=str(n_subscans)
         )
         QtTest.QTest.mouseClick(
@@ -262,7 +244,7 @@ class TestDatasetDisplayWidget(unittest.TestCase):
         n_subscans = len(
             self.widget.model.datasets[dataset_name].subscans["boundaries"]
         )
-        self.qtest_enter_text(
+        qtbricks.testing.qtest_enter_text(
             widget=self.widget._subscan_current_edit, text=str(n_subscans)
         )
         QtTest.QTest.mouseClick(
