@@ -377,9 +377,14 @@ class Chain:
                 if "alternate" in chain["children"]
                 else chain["children"]["snapshot"]
             )
-
-        self.standard_data = standard_group["data"]
-        self.standard_metadata = standard_group["metadata"]
+        if "data" in standard_group:
+            self.standard_data = standard_group["data"]
+        else:
+            self.standard_data = pd.DataFrame()
+        if "metadata" in standard_group:
+            self.standard_metadata = standard_group["metadata"]
+        else:
+            self.standard_metadata = {}
         if snapshot_group is None:
             self.snapshot_data = None
             self.snapshot_metadata = None
@@ -409,6 +414,7 @@ class Chain:
         if (
             "children" in standard_group
             and "normalized" in standard_group["children"]
+            and "data" in standard_group["children"]["normalized"]
         ):
             norm = standard_group["children"]["normalized"]
             norm["data"].rename(

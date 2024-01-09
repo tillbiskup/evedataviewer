@@ -67,7 +67,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(self.dataset.data.axes[1].quantity, "blub")
         self.assertEqual(self.dataset.data.axes[1].unit, "blub_unit")
 
-    def test_set_preferred_data_with_unknown_key_raises(self):
+    def test_set_preferred_data_with_unknown_key_warns(self):
         device_names = ["foo", "bar", "bla", "blub"]
         self.dataset.data.data = np.zeros(10)
         self.dataset.data.axes[0].values = np.linspace(1, 10, 10)
@@ -75,7 +75,7 @@ class TestDataset(unittest.TestCase):
             data = eve_dataset.Data()
             data.data = np.ones(10) + idx
             self.dataset.device_data[device] = data
-        with self.assertRaises(KeyError):
+        with self.assertWarns(UserWarning):
             self.dataset.preferred_data = ["unknown_device", "bar"]
             self.dataset.preferred_data = ["foo", "unknown_device"]
 
@@ -202,4 +202,18 @@ class TestMeasurementMetadata(unittest.TestCase):
     def test_end_is_datetime_object(self):
         self.assertIsInstance(
             self.measurement_metadata.end, datetime.datetime
+        )
+
+    def test_duration_is_time_delta(self):
+        self.assertIsInstance(
+            self.measurement_metadata.duration, datetime.timedelta
+        )
+
+    def test_duration_returns_correct_time_delta(self):
+        now = datetime.datetime.now()
+        self.measurement_metadata.start = now.replace(minute=now.minute - 1)
+        self.measurement_metadata.end = now
+        self.assertEqual(
+            self.measurement_metadata.end - self.measurement_metadata.start,
+            self.measurement_metadata.duration,
         )

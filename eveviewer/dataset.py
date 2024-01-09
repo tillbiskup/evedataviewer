@@ -13,6 +13,7 @@ the radiometry package.
 
 import copy
 import datetime
+import warnings
 
 import numpy as np
 
@@ -112,6 +113,9 @@ class Dataset:
             self._set_data(device=self._preferred_data[1], kind="data")
 
     def _set_data(self, device="", kind=""):
+        if device not in self.device_data.keys():
+            warnings.warn("Device not found", UserWarning)
+            return
         if kind == "axes":
             self.data.axes[0].values = self.device_data[device].data
             self.data.axes[0].quantity = (
@@ -287,3 +291,16 @@ class MeasurementMetadata:
     def __init__(self):
         self.start = datetime.datetime.now()
         self.end = datetime.datetime.now()
+
+    @property
+    def duration(self):
+        """
+        Duration of the measurement.
+
+        Returns
+        -------
+        duration : :class:`datetime.datetime.timedelta`
+            Time difference between start and end of measurement
+
+        """
+        return self.end - self.start

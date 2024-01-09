@@ -144,7 +144,6 @@ class TestEveHDF5Importer(unittest.TestCase):
     def test_end_date_of_measurement_is_later_than_start_date(self):
         self.importer.source = self.path_to_testdata
         self.importer.import_into(self.dataset)
-        now = datetime.datetime.now()
         self.assertLess(
             self.dataset.metadata.measurement.start,
             self.dataset.metadata.measurement.end,
