@@ -92,6 +92,7 @@ class Importer:
 
     def __init__(self):
         self.source = ""
+        self._dataset = None
 
     def import_into(self, dataset=None):
         """
@@ -103,8 +104,13 @@ class Importer:
             Dataset to import the data into
 
         """
-        dataset.id = self.source
-        dataset.label = os.path.split(self.source)[1]
+        self._dataset = dataset
+        self._dataset.id = self.source
+        self._dataset.label = os.path.split(self.source)[1]
+        self._import()
+
+    def _import(self):
+        pass
 
 
 class DummyImporter(Importer):
@@ -125,31 +131,22 @@ class DummyImporter(Importer):
 
     """
 
-    def import_into(self, dataset=None):
-        """
-        Import data into the given dataset.
-
-        Parameters
-        ----------
-        dataset : :class:`eveviewer.dataset.Dataset`
-            Dataset to import the data into
-
-        """
-        super().import_into(dataset=dataset)
+    def _import(self):
+        """Actual import of data."""
         devices = [self._create_channel_names() for _ in range(6)]
         for device in devices:
-            dataset.device_data[device] = self._create_data(
+            self._dataset.device_data[device] = self._create_data(
                 channel_name=device
             )
         pos_counter_data = self._create_data()
         pos_counter_data.data = pos_counter_data.axes[0].values
         pos_counter_data.axes[1].quantity = pos_counter_data.axes[0].quantity
         pos_counter_data.axes[1].unit = pos_counter_data.axes[0].unit
-        dataset.device_data["PosCounter"] = pos_counter_data
-        dataset.preferred_data = ["PosCounter", devices[0]]
+        self._dataset.device_data["PosCounter"] = pos_counter_data
+        self._dataset.preferred_data = ["PosCounter", devices[0]]
         if "__init__" in self.source:
             splits = np.linspace(0, len(pos_counter_data.data), 5)
-            dataset.subscans["boundaries"] = [
+            self._dataset.subscans["boundaries"] = [
                 [splits[0:-1][i], splits[1:][i]]
                 for i, _ in enumerate(splits[0:-1])
             ]
@@ -196,59 +193,69 @@ class EveHDF5Importer(Importer):
 
     """
 
-    def import_into(self, dataset=None):
-        """
-        Import data into the given dataset.
+    def __init__(self):
+        super().__init__()
+        self._data = None
 
-        Parameters
-        ----------
-        dataset : :class:`eveviewer.dataset.Dataset`
-            Dataset to import the data into
+    def _import(self):
+        """Perform actual import of data."""
+        self._import_raw_data()
+        if self._data:
+            self._create_device_data()
+            self._handle_preferred_data()
+            self._create_metadata()
 
-        """
-        super().import_into(dataset=dataset)
+    def _import_raw_data(self):
         try:
-            data = paradise.StandardMeasurement(self.source)
+            self._data = paradise.StandardMeasurement(self.source)
         except ValueError:
-            data = paradise.EVEMeasurement(self.source)
-            data.data = data.standard_data
+            self._data = paradise.EVEMeasurement(self.source)
+            self._data.data = self._data.standard_data
         except KeyError:
             report_problematic_file(filename=self.source)
             print(
                 f"{self.source} cannot be read using paradise; the filename "
                 f"has been reported."
             )
-            return
-        for column in data.data.columns:
+
+    def _create_device_data(self):
+        for column in self._data.data.columns:
             device_data = eve_dataset.Data()
-            device_data.data = data.data[column].to_numpy()
-            device_data.axes[0].values = data.data.index.to_numpy()
-            device_data.axes[0].quantity = data.data.index.name
+            device_data.data = self._data.data[column].to_numpy()
+            device_data.axes[0].values = self._data.data.index.to_numpy()
+            device_data.axes[0].quantity = self._data.data.index.name
             device_data.axes[1].quantity = column
-            if column in data.units:
-                device_data.axes[1].unit = data.units[column]
+            if column in self._data.units:
+                device_data.axes[1].unit = self._data.units[column]
             else:
                 device_data.axes[1].unit = ""
-            dataset.device_data[column] = device_data
+            self._dataset.device_data[column] = device_data
         # Add "PosCounter" as "dummy" device to be able to set it as axis
         position_counter = eve_dataset.Data()
-        position_counter.data = data.data.index.to_numpy()
-        position_counter.axes[0].values = data.data.index.to_numpy()
-        position_counter.axes[0].quantity = data.data.index.name
-        position_counter.axes[1].quantity = data.data.index.name
-        dataset.device_data["PosCounter"] = position_counter
-        if not data.preferred_channel:
-            data.preferred_channel = data.data.columns[0]
+        position_counter.data = self._data.data.index.to_numpy()
+        position_counter.axes[0].values = self._data.data.index.to_numpy()
+        position_counter.axes[0].quantity = self._data.data.index.name
+        position_counter.axes[1].quantity = self._data.data.index.name
+        self._dataset.device_data["PosCounter"] = position_counter
+
+    def _create_metadata(self):
+        self._dataset.metadata.measurement.start = (
+            datetime.datetime.fromisoformat(self._data.info["StartTimeISO"])
+        )
+        self._dataset.metadata.measurement.end = (
+            datetime.datetime.fromisoformat(self._data.info["EndTimeISO"])
+        )
+
+    def _handle_preferred_data(self):
+        if not self._data.preferred_channel:
+            self._data.preferred_channel = self._data.data.columns[0]
             print(
                 f"{self.source}: No preferred channel, using"
-                f" {data.preferred_channel}"
+                f" {self._data.preferred_channel}"
             )
-        if not data.preferred_axis:
-            data.preferred_axis = data.data.index.name
-        dataset.preferred_data = [data.preferred_axis, data.preferred_channel]
-        dataset.metadata.measurement.start = datetime.datetime.fromisoformat(
-            data.info["StartTimeISO"]
-        )
-        dataset.metadata.measurement.end = datetime.datetime.fromisoformat(
-            data.info["EndTimeISO"]
-        )
+        if not self._data.preferred_axis:
+            self._data.preferred_axis = self._data.data.index.name
+        self._dataset.preferred_data = [
+            self._data.preferred_axis,
+            self._data.preferred_channel,
+        ]
