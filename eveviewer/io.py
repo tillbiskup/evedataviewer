@@ -10,6 +10,7 @@ For the time being, only a subset of the interfaces of the respective
 classes are implemented, to allow for a convenient drop-in replacement with
 the radiometry package.
 """
+import datetime
 import os
 import random
 import string
@@ -245,3 +246,9 @@ class EveHDF5Importer(Importer):
         if not data.preferred_axis:
             data.preferred_axis = data.data.index.name
         dataset.preferred_data = [data.preferred_axis, data.preferred_channel]
+        dataset.metadata.measurement.start = datetime.datetime.fromisoformat(
+            data.info["StartTimeISO"]
+        )
+        dataset.metadata.measurement.end = datetime.datetime.fromisoformat(
+            data.info["EndTimeISO"]
+        )

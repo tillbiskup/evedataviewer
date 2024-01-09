@@ -1,3 +1,4 @@
+import datetime
 import os.path
 import unittest
 
@@ -117,4 +118,34 @@ class TestEveHDF5Importer(unittest.TestCase):
         self.importer.import_into(self.dataset)
         self.assertEqual(
             self.dataset.label, os.path.split(self.importer.source)[1]
+        )
+
+    @unittest.skipUnless(os.path.exists(path_to_testdata), "No test data")
+    def test_import_into_sets_start_date_of_measurement(self):
+        self.importer.source = self.path_to_testdata
+        self.importer.import_into(self.dataset)
+        now = datetime.datetime.now()
+        self.assertLess(
+            self.dataset.metadata.measurement.start,
+            now.replace(minute=now.minute - 1),
+        )
+
+    @unittest.skipUnless(os.path.exists(path_to_testdata), "No test data")
+    def test_import_into_sets_end_date_of_measurement(self):
+        self.importer.source = self.path_to_testdata
+        self.importer.import_into(self.dataset)
+        now = datetime.datetime.now()
+        self.assertLess(
+            self.dataset.metadata.measurement.end,
+            now.replace(minute=now.minute - 1),
+        )
+
+    @unittest.skipUnless(os.path.exists(path_to_testdata), "No test data")
+    def test_end_date_of_measurement_is_later_than_start_date(self):
+        self.importer.source = self.path_to_testdata
+        self.importer.import_into(self.dataset)
+        now = datetime.datetime.now()
+        self.assertLess(
+            self.dataset.metadata.measurement.start,
+            self.dataset.metadata.measurement.end,
         )

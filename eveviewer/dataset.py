@@ -12,6 +12,7 @@ the radiometry package.
 """
 
 import copy
+import datetime
 
 import numpy as np
 
@@ -74,7 +75,7 @@ class Dataset:
             "boundaries": [],
             "current": -1,
         }
-        self.metadata = {}
+        self.metadata = DatasetMetadata()
 
     @property
     def preferred_data(self):
@@ -250,3 +251,39 @@ class Axis:
         else:
             label = self.quantity
         return label
+
+
+class DatasetMetadata:
+    """
+    Metadata for a dataset.
+
+    This class contains the minimal set of metadata for a dataset, i.e.,
+    :class:`Dataset`.
+
+    Attributes
+    ----------
+    measurement : :class:`MeasurementMetadata`
+        Metadata of measurement
+
+    """
+
+    def __init__(self):
+        self.measurement = MeasurementMetadata()
+
+
+class MeasurementMetadata:
+    """
+    General information available for each type of measurement.
+
+    Attributes
+    ----------
+    start : `datetime`
+        Date and time of start of measurement
+    end : `datetime`
+        Date and time of end of measurement
+
+    """
+
+    def __init__(self):
+        self.start = datetime.datetime.now()
+        self.end = datetime.datetime.now()

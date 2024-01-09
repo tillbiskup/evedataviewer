@@ -1,4 +1,5 @@
 import unittest
+import datetime
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -158,4 +159,47 @@ class TestDataset(unittest.TestCase):
         np.testing.assert_allclose(
             ax.lines[0].get_ydata(),
             data.data,
+        )
+
+    def test_metadata_is_metadata_object(self):
+        self.assertIsInstance(
+            self.dataset.metadata, eve_dataset.DatasetMetadata
+        )
+
+
+class TestDatasetMetadata(unittest.TestCase):
+    def setUp(self):
+        self.dataset_metadata = eve_dataset.DatasetMetadata()
+
+    def test_instantiate_class(self):
+        pass
+
+    def test_has_measurement_metadata(self):
+        self.assertTrue(hasattr(self.dataset_metadata, "measurement"))
+        self.assertIsInstance(
+            self.dataset_metadata.measurement, eve_dataset.MeasurementMetadata
+        )
+
+
+class TestMeasurementMetadata(unittest.TestCase):
+    def setUp(self):
+        self.measurement_metadata = eve_dataset.MeasurementMetadata()
+
+    def test_instantiate_class(self):
+        pass
+
+    def test_has_attributes(self):
+        attributes = ["start", "end"]
+        for attribute in attributes:
+            with self.subTest(attribute=attribute):
+                self.assertTrue(hasattr(self.measurement_metadata, attribute))
+
+    def test_start_is_datetime_object(self):
+        self.assertIsInstance(
+            self.measurement_metadata.start, datetime.datetime
+        )
+
+    def test_end_is_datetime_object(self):
+        self.assertIsInstance(
+            self.measurement_metadata.end, datetime.datetime
         )
