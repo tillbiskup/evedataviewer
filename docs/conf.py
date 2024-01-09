@@ -18,7 +18,7 @@ with open(
     release_ = version_file.read().strip()
 
 project = "eveviewer"
-copyright = "2023, Till Biskup"
+copyright = "2023-24, Till Biskup"
 author = "Till Biskup"
 
 # The short X.Y version
