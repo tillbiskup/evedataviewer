@@ -238,14 +238,6 @@ class EveHDF5Importer(Importer):
         position_counter.axes[1].quantity = self._data.data.index.name
         self._dataset.device_data["PosCounter"] = position_counter
 
-    def _create_metadata(self):
-        self._dataset.metadata.measurement.start = (
-            datetime.datetime.fromisoformat(self._data.info["StartTimeISO"])
-        )
-        self._dataset.metadata.measurement.end = (
-            datetime.datetime.fromisoformat(self._data.info["EndTimeISO"])
-        )
-
     def _handle_preferred_data(self):
         if not self._data.preferred_channel:
             self._data.preferred_channel = self._data.data.columns[0]
@@ -259,3 +251,11 @@ class EveHDF5Importer(Importer):
             self._data.preferred_axis,
             self._data.preferred_channel,
         ]
+
+    def _create_metadata(self):
+        self._dataset.metadata.measurement.start = (
+            datetime.datetime.fromisoformat(self._data.info["StartTimeISO"])
+        )
+        self._dataset.metadata.measurement.end = (
+            datetime.datetime.fromisoformat(self._data.info["EndTimeISO"])
+        )
