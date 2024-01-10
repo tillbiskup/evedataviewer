@@ -281,16 +281,24 @@ class MeasurementMetadata:
 
     Attributes
     ----------
-    start : `datetime`
+    start : :class:`datetime`
         Date and time of start of measurement
-    end : `datetime`
+    end : :class:`datetime`
         Date and time of end of measurement
+    location : :class:`str`
+        Name of the place the measurement has taken place.
+
+        Usually the (internal) name of the corresponding beamline or
+        measuring station.
 
     """
 
     def __init__(self):
-        self.start = datetime.datetime.now()
+        self.start = datetime.datetime.now().replace(
+            minute=datetime.datetime.now().minute - 1
+        )
         self.end = datetime.datetime.now()
+        self.location = ""
 
     @property
     def duration(self):

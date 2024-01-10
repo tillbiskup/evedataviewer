@@ -133,7 +133,7 @@ class DummyImporter(Importer):
 
     def _import(self):
         """Actual import of data."""
-        devices = [self._create_channel_names() for _ in range(6)]
+        devices = [self._create_name() for _ in range(6)]
         for device in devices:
             self._dataset.device_data[device] = self._create_data(
                 channel_name=device
@@ -150,9 +150,10 @@ class DummyImporter(Importer):
                 [splits[0:-1][i], splits[1:][i]]
                 for i, _ in enumerate(splits[0:-1])
             ]
+        self._dataset.metadata.measurement.location = self._create_name()
 
     @staticmethod
-    def _create_channel_names():
+    def _create_name():
         return "".join(
             random.choices(string.ascii_letters + "_", k=12)  # nosec
         )

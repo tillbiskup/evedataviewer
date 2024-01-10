@@ -189,7 +189,7 @@ class TestMeasurementMetadata(unittest.TestCase):
         pass
 
     def test_has_attributes(self):
-        attributes = ["start", "end"]
+        attributes = ["start", "end", "duration", "location"]
         for attribute in attributes:
             with self.subTest(attribute=attribute):
                 self.assertTrue(hasattr(self.measurement_metadata, attribute))
