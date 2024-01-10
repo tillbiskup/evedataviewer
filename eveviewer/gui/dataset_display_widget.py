@@ -220,8 +220,18 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
             self._subscan_number_label.setText("0")
 
     def _update_axes_and_subscans(self):
+        self._update_model_current_dataset()
         self._update_axes_comboboxes()
         self._update_subscan_widgets()
+
+    def _update_model_current_dataset(self):
+        selected_dataset = self._dataset_combobox.currentIndex()
+        if selected_dataset == -1:
+            self.model.current_dataset = ""
+        else:
+            self.model.current_dataset = self.model.datasets_to_display[
+                selected_dataset
+            ]
 
     def _set_widget_properties(self):
         """
@@ -416,8 +426,6 @@ if __name__ == "__main__":
             widget = DatasetDisplayWidget()
             dataset_names = ["/foo/bar/bla.blub", "/foo/bar/foobar.blub"]
             widget.model.datasets_to_display = dataset_names
-            # noinspection PyProtectedMember
-            widget._update_ui()
             self.setCentralWidget(widget)
             self.show()
 

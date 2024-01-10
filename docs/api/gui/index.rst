@@ -13,7 +13,9 @@ eveviewer.gui subpackage
     eveviewer.gui.app
     eveviewer.gui.dataset_display_widget
     eveviewer.gui.mainwindow
+    eveviewer.gui.measurement_characteristics_widget
     eveviewer.gui.model
+
 
 
 

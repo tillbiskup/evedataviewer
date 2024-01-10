@@ -12,5 +12,9 @@ Not yet released
 
 * First public release
 
-* ...
+* Display 1D data (not yet spectra or images)
+* Select axes/channels to be plotted
+* Change axes mode: linear/logarithmic
+* Display subscans
+* Display characteristics for each measurement (time, duration, location)
 

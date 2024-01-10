@@ -113,7 +113,7 @@ class Dataset:
             self._set_data(device=self._preferred_data[1], kind="data")
 
     def _set_data(self, device="", kind=""):
-        if device not in self.device_data.keys():
+        if device not in self.device_data:
             warnings.warn("Device not found", UserWarning)
             return
         if kind == "axes":

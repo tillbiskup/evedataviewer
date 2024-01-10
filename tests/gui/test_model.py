@@ -41,6 +41,30 @@ class SignalReceiver:
         )
 
 
+class SignalNotReceiver:
+    """
+    Context manager class detecting whether a QSignal has not been emitted.
+
+    Adapted from https://stackoverflow.com/a/48128768
+    """
+
+    def __init__(self, test, signal):
+        self.test = test
+        self.signal = signal
+        self.called = False
+
+    def slot(self, *args):
+        self.called = True
+
+    def __enter__(self):
+        self.signal.connect(self.slot)
+
+    def __exit__(self, e, msg, traceback):
+        if e:
+            raise e(msg)
+        self.test.assertFalse(self.called, "Signal called!")
+
+
 class TestCaseUsingQSignals(unittest.TestCase):
     """
     Test class for testing whether a QSignal has been emitted.
@@ -61,6 +85,9 @@ class TestCaseUsingQSignals(unittest.TestCase):
 
     def assertSignalReceived(self, signal, args):
         return SignalReceiver(self, signal, args)
+
+    def assertSignalNotReceived(self, signal):
+        return SignalNotReceiver(self, signal)
 
 
 class TestModel(unittest.TestCase):
@@ -159,6 +186,23 @@ class TestModel(unittest.TestCase):
         mock.datasets_to_display = ["foo"]
         self.assertFalse(mock.method_called)
 
+    def test_set_current_dataset(self):
+        datasets = ["foo", "bar"]
+        self.model.datasets_to_display = datasets
+        self.model.current_dataset = datasets[0]
+        self.assertEqual(self.model.current_dataset, datasets[0])
+
+    def test_set_current_dataset_does_not_set_nonexisting_dataset(self):
+        datasets = ["foo", "bar"]
+        self.model.datasets_to_display = datasets
+        self.model.current_dataset = "blub"
+        self.assertNotEqual(self.model.current_dataset, "blub")
+
+    def test_set_datasets_to_display_initially_sets_current_dataset(self):
+        datasets = ["foo", "bar"]
+        self.model.datasets_to_display = datasets
+        self.assertEqual(datasets[0], self.model.current_dataset)
+
 
 class TestModelSignals(TestCaseUsingQSignals):
     def setUp(self):
@@ -181,3 +225,18 @@ class TestModelSignals(TestCaseUsingQSignals):
     def test_dataset_changed_signal_can_be_emitted(self):
         with self.assertSignalReceived(self.model.dataset_changed, ""):
             self.model.dataset_changed.emit([])
+
+    def test_change_in_current_dataset_emits_signal(self):
+        datasets = ["foo.bla", "bar.blub"]
+        self.model.datasets_to_display = datasets
+        with self.assertSignalReceived(
+            self.model.current_dataset_changed, datasets[1]
+        ):
+            self.model.current_dataset = datasets[1]
+
+    def test_setting_current_dataset_identical_doesnt_emit_signal(self):
+        datasets = ["foo.bla", "bar.blub"]
+        self.model.datasets_to_display = datasets
+        self.model.current_dataset = datasets[0]
+        with self.assertSignalNotReceived(self.model.current_dataset_changed):
+            self.model.current_dataset = datasets[0]

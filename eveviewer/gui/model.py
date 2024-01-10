@@ -32,7 +32,7 @@ For the model, this boils down to:
   with the display mode depending on internal settings.
 
 
-Additional aspects not yet implemented, but necessary:
+Additional aspects that are handled from within the individual datasets:
 
 * Select channels and axes to plot (basically, *x* and *y* data)
 * Handle subscans within a dataset (and remember the current subscan number)
@@ -42,7 +42,8 @@ Things to be decided upon:
 
 * How to deal with displaying multiple datasets with incompatible axes?
 * Shall datasets remember the setting for channel/axis/subscan during one
-  session of the GUI? Probably yes...
+  session of the GUI? Currently, they do. Do we need to have a "reset"
+  button or similar?
 * Shall datasets remember plot-specific settings?
 
 
@@ -127,6 +128,18 @@ class Model(QtCore.QObject):
     The signal contains the name of the dataset that has changed.
     """
 
+    current_dataset_changed = QtCore.Signal(str)
+    """
+    Signal that should be emitted whenever the current dataset changes.
+
+    The difference between current dataset and dataset selection: the 
+    latter is generally a list, the current dataset the one that is 
+    operated upon (*i.e.*, the current selection from the list of datasets 
+    to be displayed).
+
+    The signal contains the name of the currently selected dataset.
+    """
+
     plot_changed = QtCore.Signal()
     """
     Signal that should be emitted whenever the plot or its properties change.
@@ -138,6 +151,7 @@ class Model(QtCore.QObject):
         self._datasets_to_display = utils.NotifyingList(
             callback=self.display_data
         )
+        self._current_dataset = ""
         self.figure = None
         self.dataset_changed.connect(self.display_data)
         self.plot_changed.connect(self._refresh_plot)
@@ -170,7 +184,43 @@ class Model(QtCore.QObject):
             return
         self._datasets_to_display = datasets
         self.display_data()
+        if not self.current_dataset:
+            self.current_dataset = datasets[0]
         self.dataset_selection_changed.emit(self._datasets_to_display)
+
+    @property
+    def current_dataset(self):
+        # noinspection PyUnresolvedReferences
+        """
+        Currently active dataset from the list of datasets to display.
+
+        While the list of datasets to be displayed contains the names of all
+        datasets that are currently displayed in the GUI, the currently
+        active dataset is the one element from this list currently acted
+        upon. This is crucial for all those operations that can only work
+        on one dataset at a time, be it displaying data or acting upon the
+        dataset itself.
+
+        Parameters
+        ----------
+        dataset : :class:`str`
+            Name of the dataset to set as current
+
+        Returns
+        -------
+        dataset : :class:`str`
+            Name of the currently active dataset
+
+        """
+        return self._current_dataset
+
+    @current_dataset.setter
+    def current_dataset(self, dataset):
+        if dataset and dataset not in self.datasets_to_display:
+            return
+        if self._current_dataset != dataset:
+            self._current_dataset = dataset
+            self.current_dataset_changed.emit(self._current_dataset)
 
     @QtCore.Slot()
     def display_data(self):

@@ -316,3 +316,15 @@ class TestDatasetDisplayWidget(unittest.TestCase):
         self.assertTrue(self.widget._y_axis_combobox.currentText())
         self.widget.model.datasets_to_display = []
         self.assertFalse(self.widget._y_axis_combobox.currentText())
+
+    def test_changing_dataset_selection_updates_model(self):
+        dataset_names = ["/foo/bar/bla.blub", "/foo/bar/foobar.blub"]
+        self.widget.model.datasets_to_display = dataset_names
+        self.widget._dataset_combobox.setCurrentIndex(1)
+        self.assertEqual(dataset_names[1], self.widget.model.current_dataset)
+
+    def test_clearing_dataset_selection_updates_model(self):
+        dataset_names = ["/foo/bar/bla.blub", "/foo/bar/foobar.blub"]
+        self.widget.model.datasets_to_display = dataset_names
+        self.widget._dataset_combobox.setCurrentIndex(-1)
+        self.assertEqual("", self.widget.model.current_dataset)

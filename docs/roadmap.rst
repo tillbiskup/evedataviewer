@@ -15,13 +15,16 @@ Version 0.1 is meant as a first demonstrator, being able to load and display rea
   * Select axes/channels to be plotted
   * Display subscans
 
+* Display characteristics for each measurement:
+
+  * start/stop time of the scan (and total scan taken)
+  * location (*i.e.*, beamline or measuring station)
+
 
 For later versions
 ==================
 
 * Display characteristics for each scan
-
-  * start/stop time of the scan (and total scan taken)
   * maximum: position and value
   * FWHM
   * step width of scan
@@ -39,6 +42,8 @@ For later versions
 * Further display modes
 
   * Comparing parameters for scans (perhaps with diff view and/or colours)
+
+* Attachable status window with log messages
 
 
 General

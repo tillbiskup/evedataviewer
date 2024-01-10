@@ -114,6 +114,7 @@ import qtbricks.mainwindow
 import qtbricks.plot
 
 from eveviewer.gui import model, dataset_display_widget
+from eveviewer.gui import measurement_characteristics_widget as measurement
 
 
 class MainWindow(qtbricks.mainwindow.MainWindow):
@@ -135,8 +136,8 @@ class MainWindow(qtbricks.mainwindow.MainWindow):
 
     Rather than creating an instance of :class:`MainWindow` yourself,
     you will usually call the :func:`app.main` function of the :mod:`app`
-    module, or simply call the GUI by means of the respective gui_scripts entry
-    point defined in ``setup.py``.
+    module, or simply call the GUI by means of the respective gui_scripts
+    entry point defined in ``setup.py``.
 
     By default, window geometry and state will be saved on close and
     restored on startup. This creates a file, typically in the user's home
@@ -153,14 +154,19 @@ class MainWindow(qtbricks.mainwindow.MainWindow):
             "filter_disables": False,
         }
         self.plot = qtbricks.plot.Plot()
-        self.dataset_display = dataset_display_widget.DatasetDisplayWidget()
+        self._dataset_display = dataset_display_widget.DatasetDisplayWidget()
+        self._measurement_characteristics = (
+            measurement.MeasurementCharacteristicsWidget()
+        )
+        self._dataset_controls = QtWidgets.QWidget()
         # Needs to appear after the central widgets, but before the model
         super().__init__()
         self.setMinimumSize(QtCore.QSize(1000, 600))
         self.model = model.Model()
         self.model.figure = self.plot.figure
         self.file_browser.selection_changed.connect(self._update_model)
-        self.dataset_display.model = self.model
+        self._dataset_display.model = self.model
+        self._measurement_characteristics.model = self.model
 
     def _create_central_widget(self):
         splitter = QtWidgets.QSplitter()
@@ -172,9 +178,13 @@ class MainWindow(qtbricks.mainwindow.MainWindow):
         self.model.datasets_to_display = list(datasets)
 
     def _create_dock_windows(self):
+        dataset_control_layout = QtWidgets.QVBoxLayout()
+        dataset_control_layout.addWidget(self._dataset_display)
+        dataset_control_layout.addWidget(self._measurement_characteristics)
+        self._dataset_controls.setLayout(dataset_control_layout)
         dataset_display_dock = qtbricks.mainwindow.GeneralDockWindow(
             title="Dataset display",
-            widget=self.dataset_display,
+            widget=self._dataset_controls,
             object_name="dataset_display",
         )
         dataset_display_dock.setAllowedAreas(QtCore.Qt.RightDockWidgetArea)
