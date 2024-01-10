@@ -4,7 +4,7 @@ eveviewer
 
 *A GUI for inspecting data contained in EVE files.*
 
-Welcome! This is the documentation for eveviewer, a Python package for graphically inspecting data contained in EVE files, *i.e.* data obtained at one of the beamlines at BESSY-II or MLS in Berlin, mostly operated by the German National Metrology Institute, the `Physikalisch-Technische Bundesanstalt (PTB) <https://www.ptb.de/>`_. The primary goal of the package is to provide a GUI to conveniently inspect (and preliminary analyse) data directly at the beamline.
+Welcome! This is the documentation for eveviewer, a Python package for **graphically inspecting data** contained in EVE files, *i.e.* data **obtained at one of the beamlines at BESSY-II or MLS in Berlin**, mostly operated by the German National Metrology Institute, the `Physikalisch-Technische Bundesanstalt (PTB) <https://www.ptb.de/>`_. The primary goal of the package is to provide a GUI to conveniently inspect (and preliminary analyse) data directly at the beamline.
 
 Running eveviewer is as simple as typing ``eveviewer`` into a terminal:
 
@@ -56,6 +56,8 @@ To install the eveviewer package on your computer (sensibly within a Python virt
 .. code-block:: bash
 
     pip install eveviewer
+
+See the :doc:`installation section <installing>` for further details.
 
 
 License
