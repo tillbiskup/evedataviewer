@@ -25,6 +25,7 @@ For later versions
 ==================
 
 * Display characteristics for each scan
+
   * maximum: position and value
   * FWHM
   * step width of scan
@@ -37,7 +38,7 @@ For later versions
 * Processing and analysis
 
   * energy edge (there should be code available... rewrite or include via plugin mechanism)
-  * should be seen in context of a ``radiometry`` Python package for data processing and analysis
+  * Should be seen in context of a ``radiometry`` Python package for data processing and analysis
 
 * Further display modes
 
@@ -53,12 +54,12 @@ A list of obvious things to discuss/decide/implement:
 
 * Handling of files
 
-  * Some files cannot easily be imported using paradise (and are currently logged) -- investigate and solve
+  * Some files cannot easily be imported using paradise (and are currently logged) -- investigate and solve (may have been solved: datasets without data caused problems)
   * How to deal with datasets that have no preferred channel/axis set?
 
   * Larger discussion: How to continue with importers? Use evefile? Use an updated/improved version of paradise? Develop an own machinery?
 
-* Most important basic feature
+* Most important basic features
 
   * What are the most important basic features of the viewer?
 
@@ -69,6 +70,12 @@ A list of obvious things to discuss/decide/implement:
 * Dataset model
 
   * Design a dataset model for the data
+  * Should be seen in context of a ``radiometry`` Python package for data processing and analysis
+
+* Handling of spectra (contained in HDF5 files?)
+
+  * How and where to display?
+  * Will probably need example files and input from actual users...
 
 * Handling of external files (images)
 

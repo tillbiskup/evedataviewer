@@ -4,7 +4,7 @@ Model for the eveviewer GUI application.
 .. note::
 
     A note for developers: Following the Model--View (MV) pattern, the model
-    does not care nor knows about the view, but the view (here:
+    does not care nor know about the view, but the view (here:
     :class:`eveviewer.gui.mainwindow.MainWindow`) knows about the model
     and connects to the appropriate signals and slots. The model is the
     place to define the "business logic", *i.e.* the (abstract) behaviour of
@@ -83,7 +83,14 @@ from eveviewer import utils
 
 class Model(QtCore.QObject):
     """
-    Model for the eveviewer application.
+    Model for the eveviewer GUI application.
+
+    The model in the model-view pattern contains the business logic.
+    Furthermore, the model does not know nor care about views, but views
+    are aware of the model. While views can modify/update the model,
+    the model takes care of emitting signals whenever its internal state
+    changes. Thus, views can subscribe to these signals and update
+    themselves accordingly.
 
     Attributes
     ----------
@@ -111,6 +118,18 @@ class Model(QtCore.QObject):
     figure : :class:`matplotlib.figure.Figure`
         Figure used to plot data
 
+        .. note::
+            In the long run, this should probably be replaced with a
+            plotter object taking care of plotting the selected data. As a
+            MultiPlotter can handle 1..*n* datasets, whereas a
+            SinglePlotter can only handle a single dataset, using a
+            MultiPlotter should be rather safe.
+
+            Perhaps both, a figure and a plotter are necessary, as this
+            would allow to change/replace the plotter and take care from
+            within the model that the plotter will always be (re)connected
+            to the figure.
+
     """
 
     dataset_selection_changed = QtCore.Signal(list)
@@ -119,6 +138,12 @@ class Model(QtCore.QObject):
 
     The signal contains the names of the selected datasets as :class:`list` 
     parameter.
+
+    Returns
+    -------
+    datasets : :class:`list`
+        Names of the selected datasets.
+
     """
 
     dataset_changed = QtCore.Signal(str)
@@ -126,6 +151,12 @@ class Model(QtCore.QObject):
     Signal that should be emitted whenever a dataset changes.
 
     The signal contains the name of the dataset that has changed.
+
+    Returns
+    -------
+    dataset : :class:`str`
+        Name of the dataset that has been changed.
+
     """
 
     current_dataset_changed = QtCore.Signal(str)
@@ -138,6 +169,12 @@ class Model(QtCore.QObject):
     to be displayed).
 
     The signal contains the name of the currently selected dataset.
+
+    Returns
+    -------
+    dataset : :class:`str`
+        Name of the dataset that is currently selected.
+
     """
 
     plot_changed = QtCore.Signal()
