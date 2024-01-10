@@ -93,9 +93,9 @@ class MeasurementCharacteristicsWidget(QtWidgets.QWidget):
         #. Set the layout
         #. Connect the signals and slots
 
-         A requirement is to define all widgets as non-public attributes in
-         the class constructor. This comes with the advantage to separate
-         the different tasks into methods.
+        A requirement is to define all widgets as non-public attributes in
+        the class constructor. This comes with the advantage to separate
+        the different tasks into methods.
         """
         self._set_widget_properties()
         self._set_layout()

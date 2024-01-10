@@ -107,11 +107,14 @@ Module documentation
 
 """
 
+import os
+
 from PySide6 import QtWidgets, QtCore
 
 import qtbricks.filebrowser
 import qtbricks.mainwindow
 import qtbricks.plot
+import qtbricks.utils
 
 from eveviewer.gui import model, dataset_display_widget
 from eveviewer.gui import measurement_characteristics_widget as measurement
@@ -165,6 +168,11 @@ class MainWindow(qtbricks.mainwindow.MainWindow):
         self.model = model.Model()
         self.model.figure = self.plot.figure
         self.file_browser.selection_changed.connect(self._update_model)
+        self.package_name = "eveviewer"
+        self.logo = qtbricks.utils.image_path(
+            "icon.svg", base_dir=os.path.dirname(__file__)
+        )
+
         self._dataset_display.model = self.model
         self._measurement_characteristics.model = self.model
 

@@ -53,7 +53,7 @@ class SignalNotReceiver:
         self.signal = signal
         self.called = False
 
-    def slot(self, *args):
+    def slot(self):
         self.called = True
 
     def __enter__(self):
