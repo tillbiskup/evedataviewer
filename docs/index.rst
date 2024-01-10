@@ -30,8 +30,7 @@ A list of features:
 * Display multiple data files at once, simply by selecting them in the file browser
 * Standard manipulation of graphical display (zooming, panning, ...)
 
-
-And to make it even more convenient for users and future-proof:
+For more details, have a look at the :doc:`usecases section <usecases>`. To make it even more convenient for users and future-proof:
 
 * Open source project written in Python (>= 3.7)
 * Following best practices for software development
@@ -42,6 +41,8 @@ And to make it even more convenient for users and future-proof:
 
 * Developed fully test-driven
 * Extensive user and API documentation
+
+Further details are provided in the :doc:`general architecture section <architecture>` of the developer documentation.
 
 
 .. warning::

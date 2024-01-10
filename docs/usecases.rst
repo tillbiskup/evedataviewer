@@ -35,7 +35,7 @@ There is a series of standard tools expected to be present to manipulate the gra
 * show/hide grid
 * logarithmic axes
 
-Most of this should be available and familiar from the default matplotlib figures. In any case, this functionality will be provided by the :class:`qtbricks.plot.Plot` widget.
+Most of this should be available and familiar from the default matplotlib figures. In any case, (most of) this functionality is provided by the :class:`qtbricks.plot.Plot` widget.
 
 
 Display of dataset characteristics
@@ -43,10 +43,12 @@ Display of dataset characteristics
 
 A series of characteristics of each individual scan/dataset should be readily availabe, either in a separate window or next to the graphical display:
 
-* start/stop time of the scan (and total scan taken)
+* start/stop time of the scan (and total time taken)
 * maximum: position and value
 * FWHM
 * step width of scan
+
+These characteristics can be divided into measurement metadata (start/stop time; duration; location, *i.e.* beamline) and data(set) characteristics (maximum; FWHM; step width).
 
 
 Displaying subscans
