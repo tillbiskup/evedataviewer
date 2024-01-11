@@ -12,13 +12,7 @@ Version 0.1 is meant as a first demonstrator, being able to load and display rea
 
 + GUI features
 
-  * Select axes/channels to be plotted
-  * Display subscans
-
-* Display characteristics for each measurement:
-
-  * start/stop time of the scan (and total scan taken)
-  * location (*i.e.*, beamline or measuring station)
+  * Display subscans (requires changing importer)
 
 
 For later versions

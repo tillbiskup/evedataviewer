@@ -7,9 +7,9 @@ at the top, status bar at the bottom, and areas for dockable windows/widgets
 on all four sides of the central widget.
 
 Rather than creating an instance of :class:`MainWindow` yourself, you will
-usually call the :func:`app.main` function of the :mod:`app` module,
-or simply call the GUI by means of the respective gui_scripts entry point
-defined in ``setup.py``.
+usually call the :func:`eveviewer.gui.app.main` function of the
+:mod:`eveviewer.gui.app` module, or simply call the GUI by means of the
+respective gui_scripts entry point defined in ``setup.py``.
 
 
 Some notes for developers
@@ -138,16 +138,38 @@ class MainWindow(qtbricks.mainwindow.MainWindow):
     central widget, is laid out programmatically.
 
     Rather than creating an instance of :class:`MainWindow` yourself,
-    you will usually call the :func:`app.main` function of the :mod:`app`
-    module, or simply call the GUI by means of the respective gui_scripts
-    entry point defined in ``setup.py``.
+    you will usually call the :func:`eveviewer.gui.app.main` function of the
+    :mod:`eveviewer.gui.app` module, or simply call the GUI by means of the
+    respective gui_scripts entry point defined in ``setup.py``.
 
     By default, window geometry and state will be saved on close and
     restored on startup. This creates a file, typically in the user's home
     directory, and depending on the respective platform. Directory and file
     name depend on the settings of organisation and application name on the
-    application level. For details, see the :func:`app.main` function in the
-    :mod:`app` module.
+    application level. For details, see the :func:`eveviewer.gui.app.main`
+    function in the :mod:`eveviewer.gui.app` module.
+
+    Attributes
+    ----------
+    file_browser : :class:`qtbricks.filebrowser.FileBrowser`
+        Widget for browsing and navigating through files and directories
+
+    plot : :class:`qtbricks.plot.Plot`
+        Widget for graphical display of data
+
+    model : :class:`eveviewer.gui.model.Model`
+        Model for the eveviewer GUI application.
+
+    package_name : :class:`str`
+        Name of the package the main GUI window belongs to.
+
+        This information is required, *i.a.*, for the "Help About" window.
+
+    logo : :class:`str`
+        Path to logo image file
+
+        The logo is used, *i.a.*, for the Help About window.
+
     """
 
     def __init__(self):
@@ -162,8 +184,10 @@ class MainWindow(qtbricks.mainwindow.MainWindow):
             measurement.MeasurementCharacteristicsWidget()
         )
         self._dataset_controls = QtWidgets.QWidget()
+
         # Needs to appear after the central widgets, but before the model
         super().__init__()
+
         self.setMinimumSize(QtCore.QSize(1000, 600))
         self.model = model.Model()
         self.model.figure = self.plot.figure
