@@ -148,3 +148,9 @@ class TestEveHDF5Importer(unittest.TestCase):
             self.dataset.metadata.measurement.start,
             self.dataset.metadata.measurement.end,
         )
+
+    @unittest.skipUnless(os.path.exists(path_to_testdata), "No test data")
+    def test_import_into_sets_location(self):
+        self.importer.source = self.path_to_testdata
+        self.importer.import_into(self.dataset)
+        self.assertTrue(self.dataset.metadata.measurement.location)

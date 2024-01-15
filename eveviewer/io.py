@@ -260,3 +260,4 @@ class EveHDF5Importer(Importer):
         self._dataset.metadata.measurement.end = (
             datetime.datetime.fromisoformat(self._data.info["EndTimeISO"])
         )
+        self._dataset.metadata.measurement.location = self._data.location
