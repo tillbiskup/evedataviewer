@@ -59,7 +59,7 @@ class Dataset:
 
             Set to -1 to temporarily disable subscans.
 
-    metadata : :class:`dict`
+    metadata : :class:`DatasetMetadata`
         All relevant metadata for the dataset.
 
         Currently, a plain dict, but will be replaced with appropriate classes.
@@ -307,7 +307,7 @@ class MeasurementMetadata:
 
         Returns
         -------
-        duration : :class:`datetime.datetime.timedelta`
+        duration : :class:`datetime.timedelta`
             Time difference between start and end of measurement
 
         """
