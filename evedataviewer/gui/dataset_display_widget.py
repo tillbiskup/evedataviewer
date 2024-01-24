@@ -78,6 +78,8 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         self._y_axis_combobox = QtWidgets.QComboBox()
         self._y_axis_scale_combobox = QtWidgets.QComboBox()
         self._y_axis_label = QtWidgets.QLabel()
+        self._normalise_axis_combobox = QtWidgets.QComboBox()
+        self._normalise_axis_label = QtWidgets.QLabel()
         self._subscan_decrement_button = QtWidgets.QPushButton()
         self._subscan_increment_button = QtWidgets.QPushButton()
         self._subscan_current_edit = QtWidgets.QLineEdit("0")
@@ -271,6 +273,14 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         self._y_axis_scale_combobox.setToolTip("Set x axis scale of dataset")
         self._y_axis_scale_combobox.addItems(axis_scales)
 
+        self._normalise_axis_combobox.setObjectName("normalise_axis_combobox")
+        self._normalise_axis_combobox.setToolTip(
+            "Set normalisation of dataset"
+        )
+        self._normalise_axis_label.setText("normalise:")
+        self._normalise_axis_label.setObjectName("normalise_axis_label")
+        self._normalise_axis_label.setBuddy(self._normalise_axis_combobox)
+
         self._subscan_decrement_button = qtbricks.utils.create_button(
             text="",
             slot=None,
@@ -325,6 +335,8 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         top_layout.addWidget(self._y_axis_label, 3, 0)
         top_layout.addWidget(self._y_axis_combobox, 3, 1)
         top_layout.addWidget(self._y_axis_scale_combobox, 4, 1)
+        top_layout.addWidget(self._normalise_axis_label, 5, 0)
+        top_layout.addWidget(self._normalise_axis_combobox, 5, 1)
         subscans_layout = QtWidgets.QHBoxLayout()
         subscans_layout.addWidget(self._subscan_decrement_button)
         subscans_layout.addWidget(self._subscan_increment_button)
@@ -332,8 +344,8 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         subscans_layout.addWidget(QtWidgets.QLabel("/"))
         subscans_layout.addWidget(self._subscan_number_label)
         subscans_layout.addStretch(1)
-        top_layout.addWidget(self._subscan_label, 5, 0)
-        top_layout.addLayout(subscans_layout, 5, 1)
+        top_layout.addWidget(self._subscan_label, 6, 0)
+        top_layout.addLayout(subscans_layout, 6, 1)
         layout = QtWidgets.QVBoxLayout()
         layout.addLayout(top_layout)
         layout.addStretch(1)
