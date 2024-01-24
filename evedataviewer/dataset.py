@@ -294,9 +294,7 @@ class MeasurementMetadata:
     """
 
     def __init__(self):
-        self.start = datetime.datetime.now().replace(
-            minute=datetime.datetime.now().minute - 1
-        )
+        self.start = datetime.datetime.now() - datetime.timedelta(minutes=1)
         self.end = datetime.datetime.now()
         self.location = ""
 
