@@ -1,5 +1,5 @@
 """
-eveviewer app.
+evedataviewer app.
 
 This module provides the high-level interface to the app and a function that
 gets wired up as "gui_script" entry point in the ``setup.py``.
@@ -13,7 +13,7 @@ from PySide6.QtCore import Qt
 
 import qtbricks.utils
 
-from eveviewer.gui import mainwindow
+from evedataviewer.gui import mainwindow
 
 
 def splash_screen():
@@ -58,9 +58,9 @@ def main():
     app = QtWidgets.QApplication(sys.argv)
     splash = splash_screen()
 
-    app.setOrganizationName("eveviewer")
+    app.setOrganizationName("evedataviewer")
     app.setOrganizationDomain("ptb.de")
-    app.setApplicationName("eveviewer")
+    app.setApplicationName("evedataviewer")
     app.setWindowIcon(
         QtGui.QIcon(
             qtbricks.utils.image_path(

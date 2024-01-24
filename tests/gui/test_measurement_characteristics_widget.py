@@ -2,7 +2,7 @@ import unittest
 
 from PySide6 import QtCore, QtWidgets
 
-from eveviewer.gui import measurement_characteristics_widget
+from evedataviewer.gui import measurement_characteristics_widget
 
 
 class TestMeasurementCharacteristicsWidget(unittest.TestCase):

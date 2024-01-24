@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from PySide6 import QtCore, QtWidgets, QtTest
 import qtbricks.testing
 
-from eveviewer.gui import dataset_display_widget, model
+from evedataviewer.gui import dataset_display_widget, model
 
 
 class TestDatasetDisplayWidget(unittest.TestCase):

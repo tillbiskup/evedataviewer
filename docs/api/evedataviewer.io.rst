@@ -1,7 +1,7 @@
-eveviewer.io module
-===================
+evedataviewer.io module
+=======================
 
-.. automodule:: eveviewer.io
+.. automodule:: evedataviewer.io
     :members:
     :inherited-members:
     :undoc-members:

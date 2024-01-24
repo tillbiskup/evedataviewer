@@ -2,8 +2,8 @@ import datetime
 import os.path
 import unittest
 
-from eveviewer import io as eve_io
-from eveviewer import dataset as eve_dataset
+from evedataviewer import io as eve_io
+from evedataviewer import dataset as eve_dataset
 
 
 class TestImporterFactory(unittest.TestCase):

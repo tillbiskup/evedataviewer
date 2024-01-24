@@ -1,5 +1,5 @@
 """
-io module of the eveviewer package.
+io module of the evedataviewer package.
 
 Quick&dirty reimplementation of the ASpecD concept of IO.
 
@@ -17,8 +17,8 @@ import string
 
 import numpy as np
 
-from eveviewer import paradise
-from eveviewer import dataset as eve_dataset
+from evedataviewer import paradise
+from evedataviewer import dataset as eve_dataset
 
 
 def report_problematic_file(filename=""):
@@ -100,7 +100,7 @@ class Importer:
 
         Parameters
         ----------
-        dataset : :class:`eveviewer.dataset.Dataset`
+        dataset : :class:`evedataviewer.dataset.Dataset`
             Dataset to import the data into
 
         """
@@ -126,7 +126,7 @@ class DummyImporter(Importer):
     .. note::
         Although the "data" imported into the dataset are complete fake
         data, the importer will probably be updated with the model
-        underlying the dataset class :class:`eveviewer.dataset.Dataset`.
+        underlying the dataset class :class:`evedataviewer.dataset.Dataset`.
         This allows for testing the viewer without access to real data.
 
     """

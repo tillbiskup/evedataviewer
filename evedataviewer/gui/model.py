@@ -1,11 +1,11 @@
 """
-Model for the eveviewer GUI application.
+Model for the evedataviewer GUI application.
 
 .. note::
 
     A note for developers: Following the Model--View (MV) pattern, the model
     does not care nor know about the view, but the view (here:
-    :class:`eveviewer.gui.mainwindow.MainWindow`) knows about the model
+    :class:`evedataviewer.gui.mainwindow.MainWindow`) knows about the model
     and connects to the appropriate signals and slots. The model is the
     place to define the "business logic", *i.e.* the (abstract) behaviour of
     the application. Furthermore, the model is responsible to provide the
@@ -15,7 +15,7 @@ Model for the eveviewer GUI application.
 Core business logic
 ===================
 
-For the time being, a perhaps simplistic birds-eye view on what eveviewer
+For the time being, a perhaps simplistic birds-eye view on what evedataviewer
 is supposed to do:
 
 * Allow the user to browse data files and select one or several files for
@@ -76,14 +76,14 @@ Module documentation
 
 from PySide6 import QtCore
 
-import eveviewer.dataset
-import eveviewer.io
-from eveviewer import utils
+import evedataviewer.dataset
+import evedataviewer.io
+from evedataviewer import utils
 
 
 class Model(QtCore.QObject):
     """
-    Model for the eveviewer GUI application.
+    Model for the evedataviewer GUI application.
 
     The model in the model-view pattern contains the business logic.
     Furthermore, the model does not know nor care about views, but views
@@ -194,7 +194,7 @@ class Model(QtCore.QObject):
         self.plot_changed.connect(self._refresh_plot)
 
         self._display_mode = "plot"
-        self._importer_factory = eveviewer.io.ImporterFactory()
+        self._importer_factory = evedataviewer.io.ImporterFactory()
 
     @property
     def datasets_to_display(self):
@@ -313,7 +313,7 @@ class Model(QtCore.QObject):
             for a later drop-in replacement with an ASpecD-derived package.
 
         """
-        dataset = eveviewer.dataset.Dataset()
+        dataset = evedataviewer.dataset.Dataset()
         importer = self._importer_factory.get_importer(source=filename)
         dataset.import_from(importer)
         self.datasets[filename] = dataset

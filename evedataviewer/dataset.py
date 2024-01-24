@@ -1,5 +1,5 @@
 """
-dataset module of the eveviewer package.
+dataset module of the evedataviewer package.
 
 Quick&dirty reimplementation of the ASpecD concept of a dataset.
 
@@ -185,7 +185,7 @@ class Dataset:
 
         Parameters
         ----------
-        importer : :class:`eveviewer.io.Importer`
+        importer : :class:`evedataviewer.io.Importer`
             Importer object used to import the data
 
         """

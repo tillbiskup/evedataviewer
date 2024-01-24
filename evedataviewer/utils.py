@@ -1,5 +1,5 @@
 """
-General utils of the eveviewer package.
+General utils of the evedataviewer package.
 
 Mostly small functions that are more general and get used in the other
 modules.

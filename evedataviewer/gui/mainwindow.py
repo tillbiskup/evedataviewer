@@ -7,8 +7,8 @@ at the top, status bar at the bottom, and areas for dockable windows/widgets
 on all four sides of the central widget.
 
 Rather than creating an instance of :class:`MainWindow` yourself, you will
-usually call the :func:`eveviewer.gui.app.main` function of the
-:mod:`eveviewer.gui.app` module, or simply call the GUI by means of the
+usually call the :func:`evedataviewer.gui.app.main` function of the
+:mod:`evedataviewer.gui.app` module, or simply call the GUI by means of the
 respective gui_scripts entry point defined in ``setup.py``.
 
 
@@ -77,7 +77,7 @@ accordingly. In your case, the relevant code excerpts may look like this:
 
 .. code-block::
 
-    import eveviewer.gui.model as model
+    import evedataviewer.gui.model as model
 
 
     class MainWindow(qtbricks.mainwindow.MainWindow):
@@ -116,8 +116,10 @@ import qtbricks.mainwindow
 import qtbricks.plot
 import qtbricks.utils
 
-from eveviewer.gui import model, dataset_display_widget
-from eveviewer.gui import measurement_characteristics_widget as measurement
+from evedataviewer.gui import model, dataset_display_widget
+from evedataviewer.gui import (
+    measurement_characteristics_widget as measurement,
+)
 
 
 class MainWindow(qtbricks.mainwindow.MainWindow):
@@ -138,16 +140,16 @@ class MainWindow(qtbricks.mainwindow.MainWindow):
     central widget, is laid out programmatically.
 
     Rather than creating an instance of :class:`MainWindow` yourself,
-    you will usually call the :func:`eveviewer.gui.app.main` function of the
-    :mod:`eveviewer.gui.app` module, or simply call the GUI by means of the
+    you will usually call the :func:`evedataviewer.gui.app.main` function of the
+    :mod:`evedataviewer.gui.app` module, or simply call the GUI by means of the
     respective gui_scripts entry point defined in ``setup.py``.
 
     By default, window geometry and state will be saved on close and
     restored on startup. This creates a file, typically in the user's home
     directory, and depending on the respective platform. Directory and file
     name depend on the settings of organisation and application name on the
-    application level. For details, see the :func:`eveviewer.gui.app.main`
-    function in the :mod:`eveviewer.gui.app` module.
+    application level. For details, see the :func:`evedataviewer.gui.app.main`
+    function in the :mod:`evedataviewer.gui.app` module.
 
     Attributes
     ----------
@@ -157,8 +159,8 @@ class MainWindow(qtbricks.mainwindow.MainWindow):
     plot : :class:`qtbricks.plot.Plot`
         Widget for graphical display of data
 
-    model : :class:`eveviewer.gui.model.Model`
-        Model for the eveviewer GUI application.
+    model : :class:`evedataviewer.gui.model.Model`
+        Model for the evedataviewer GUI application.
 
     package_name : :class:`str`
         Name of the package the main GUI window belongs to.
@@ -192,7 +194,7 @@ class MainWindow(qtbricks.mainwindow.MainWindow):
         self.model = model.Model()
         self.model.figure = self.plot.figure
         self.file_browser.selection_changed.connect(self._update_model)
-        self.package_name = "eveviewer"
+        self.package_name = "evedataviewer"
         self.logo = qtbricks.utils.image_path(
             "icon.svg", base_dir=os.path.dirname(__file__)
         )

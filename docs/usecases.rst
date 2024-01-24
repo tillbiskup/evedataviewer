@@ -10,9 +10,9 @@ Use cases
         :local:
         :depth: 1
 
-Generally, you will use the graphical user interface (GUI) of the eveviewer package that you can start by typing ``eveviewer`` in a terminal (once the package is installed).
+Generally, you will use the graphical user interface (GUI) of the evedataviewer package that you can start by typing ``evedataviewer`` in a terminal (once the package is installed).
 
-For the time being, the following description of use cases is rather an idea how working with the eveviewer GUI may look like than a description of what actually can be achieved.
+For the time being, the following description of use cases is rather an idea how working with the evedataviewer GUI may look like than a description of what actually can be achieved.
 
 
 Exploring data
@@ -22,7 +22,7 @@ Usually, measuring even a single sample seems to result in a series of data file
 
 As data files are stored and organised in directories per calendar week, some kind of file browser allowing to both, navigate through a hierarchy of directories as well as flicking through the individual measurements and visually inspecting the resulting data (by means of graphical repesentations) are necessary.
 
-As each dataset consists of multiple channels and axes, and not always the preferred axes and channels are marked in the datasets, setting/changing the channels and axes to be plotted needs to be possible. Probably, this information should be stored (at least within one session of the eveviewer GUI), such that flicking through the files forwards and backwards will not reset the display unless the user intentionally changes these settings (for an individual dataset).
+As each dataset consists of multiple channels and axes, and not always the preferred axes and channels are marked in the datasets, setting/changing the channels and axes to be plotted needs to be possible. Probably, this information should be stored (at least within one session of the evedataviewer GUI), such that flicking through the files forwards and backwards will not reset the display unless the user intentionally changes these settings (for an individual dataset).
 
 
 Standard tools for manipulating graphics
@@ -80,5 +80,5 @@ Basic processing and analysis
 
 While a series of general characteristics should be available by default for every dataset displayed (see above), there is a series of processing and analysis steps required to extract data necessary to continue with measurements.
 
-Those processing and analysis steps should be implemented *outside* the eveviewer package (in a more general ``radiometry`` package), but made available in form of plugins or else. For certain characteristics/results of an analysis it may be useful to have them graphically displayed together with the data in the plot window.
+Those processing and analysis steps should be implemented *outside* the evedataviewer package (in a more general ``radiometry`` package), but made available in form of plugins or else. For certain characteristics/results of an analysis it may be useful to have them graphically displayed together with the data in the plot window.
 

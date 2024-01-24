@@ -16,7 +16,7 @@ In short: This widget is entirely read-only.
 
 from PySide6 import QtWidgets, QtCore
 
-from eveviewer.gui import model as gui_model
+from evedataviewer.gui import model as gui_model
 
 
 class MeasurementCharacteristicsWidget(QtWidgets.QWidget):
@@ -58,17 +58,17 @@ class MeasurementCharacteristicsWidget(QtWidgets.QWidget):
         Model of the Model--View architecture used by the widget.
 
         When setting the model, the
-        :attr:`eveviewer.gui.model.Model.dataset_selection_changed` signal is
+        :attr:`evedataviewer.gui.model.Model.dataset_selection_changed` signal is
         connected to the widget update method.
 
         Parameters
         ----------
-        model : :class:`eveviewer.gui.model.Model`
+        model : :class:`evedataviewer.gui.model.Model`
             The model used by the widget.
 
         Returns
         -------
-        model : :class:`eveviewer.gui.model.Model`
+        model : :class:`evedataviewer.gui.model.Model`
             The model used by the widget.
 
         """

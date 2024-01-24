@@ -2,7 +2,7 @@
 Developer documentation
 =======================
 
-Welcome to the developer documentation of the eveviewer package. Unlike the :doc:`API documentation <api/index>`, this part gives some general background information for developers who want to actively contribute to the project.
+Welcome to the developer documentation of the evedataviewer package. Unlike the :doc:`API documentation <api/index>`, this part gives some general background information for developers who want to actively contribute to the project.
 
 
 Virtual environment
@@ -14,13 +14,13 @@ To create a new virtual python environment, open a terminal and change to a a di
 
 .. code-block:: bash
 
-    python3 -m venv eveviewer
+    python3 -m venv evedataviewer
 
-This will create a virtual environment in the directory "eveviewer". To activate this virtual environment, use:
+This will create a virtual environment in the directory "evedataviewer". To activate this virtual environment, use:
 
 .. code-block:: bash
 
-    source eveviewer/bin/activate
+    source evedataviewer/bin/activate
 
 To deactivate, the command would simply be:
 
@@ -47,7 +47,7 @@ Make sure to set it to executable and have a line break (aka: new or empty line)
 Directory layout
 ================
 
-The eveviewer package follows good practice of the Python community regarding directory layout. As there will be several subpackages available, these reside each in a separate directory containing its own ``__init__.py`` file. All packages/modules reside below the ``eveviewer`` directory of the project root. The ``tests`` directory follows the same structure and contains all the module tests. Generally, the eveviewer package should be developed test-driven (test-first) as much as possible.
+The evedataviewer package follows good practice of the Python community regarding directory layout. As there will be several subpackages available, these reside each in a separate directory containing its own ``__init__.py`` file. All packages/modules reside below the ``evedataviewer`` directory of the project root. The ``tests`` directory follows the same structure and contains all the module tests. Generally, the evedataviewer package should be developed test-driven (test-first) as much as possible.
 
 (This) documentation resides inside the ``docs`` directory of the project root. The auto-generated :doc:`API documentation <api/index>` is in its own directory.
 
@@ -56,7 +56,7 @@ A general overview of the overall package structure:
 .. code-block:: bash
 
     bin/
-    eveviewer/
+    evedataviewer/
     docs/
         api/
     tests/
@@ -75,13 +75,13 @@ To use Black, it needs to be installed. Either install it separately
 
     pip install black
 
-or install the eveviewer package with the appropriate dependencies:
+or install the evedataviewer package with the appropriate dependencies:
 
 .. code-block:: bash
 
-    pip install eveviewer[dev]
+    pip install evedataviewer[dev]
 
-In case you are installing the eveviewer package in editable fashion (as usual for development purposes), use the following command from *within* the package directory (*i.e.*, the one containing the ``setup.py`` file):
+In case you are installing the evedataviewer package in editable fashion (as usual for development purposes), use the following command from *within* the package directory (*i.e.*, the one containing the ``setup.py`` file):
 
 .. code-block::
 
@@ -99,7 +99,7 @@ For static code analysis using Prospector, see the respective :ref:`section <sec
 Docstring format
 ================
 
-The Docstring format used within the code of the eveviewer package is "NumPy". For convenience, set your IDE accordingly.
+The Docstring format used within the code of the evedataviewer package is "NumPy". For convenience, set your IDE accordingly.
 
 For PyCharm, the settings can be found in ``Preferences`` > ``Tools`` > ``Python Integrated Tools``. Here, you find a section "Docstrings" where you can select the Docstring format from a number of different formats.
 
@@ -107,7 +107,7 @@ For PyCharm, the settings can be found in ``Preferences`` > ``Tools`` > ``Python
 Unittests and test driven development
 =====================================
 
-Developing the eveviewer package code should be done test-driven wherever possible. The tests reside in the ``tests`` directory in the respective subpackage directory (see above).
+Developing the evedataviewer package code should be done test-driven wherever possible. The tests reside in the ``tests`` directory in the respective subpackage directory (see above).
 
 Tests should be written using the Python :mod:`unittest` framework. Make sure that tests are independent of the respective local environment and clean up afterwards (using appropriate ``teardown`` methods).
 
@@ -115,7 +115,7 @@ Tests should be written using the Python :mod:`unittest` framework. Make sure th
 Metacode: Conveniently adding features
 ======================================
 
-The eveviewer package is maintained using the `pymetacode Python package <https://python.docs.meta-co.de/>`_. In short, use the pymetacode ``pymeta`` command from the command line/terminal whenever you want to add modules, classes, or functions. This will ensure both a consistent overall style and organisation and automatically create the respective unittest stubs for you.
+The evedataviewer package is maintained using the `pymetacode Python package <https://python.docs.meta-co.de/>`_. In short, use the pymetacode ``pymeta`` command from the command line/terminal whenever you want to add modules, classes, or functions. This will ensure both a consistent overall style and organisation and automatically create the respective unittest stubs for you.
 
 
 Setting up the documentation build system
@@ -133,13 +133,13 @@ To install the necessary Python dependencies, create a virtual environment, e.g.
     pip install sphinx-multiversion
 
 
-Alternatively, you may simply install eveviewer with the required dependencies:
+Alternatively, you may simply install evedataviewer with the required dependencies:
 
 .. code-block:: bash
 
-    pip install eveviewer[docs]
+    pip install evedataviewer[docs]
 
-In case you are installing the eveviewer package in editable fashion (as usual for development purposes), use the following command from *within* the package directory (*i.e.*, the one containing the ``setup.py`` file):
+In case you are installing the evedataviewer package in editable fashion (as usual for development purposes), use the following command from *within* the package directory (*i.e.*, the one containing the ``setup.py`` file):
 
 .. code-block::
 
@@ -163,7 +163,7 @@ To build the documentation for all releases and the current master branch:
 Static code analysis with Prospector
 ====================================
 
-Static code analysis can be performed using `Prospector <http://prospector.landscape.io/en/master/>`_. First, install the necessary tools into the virtual environment created for the eveviewer package:
+Static code analysis can be performed using `Prospector <http://prospector.landscape.io/en/master/>`_. First, install the necessary tools into the virtual environment created for the evedataviewer package:
 
 .. code-block:: bash
 

@@ -2,7 +2,7 @@
 Terminology
 ===========
 
-The eveviewer application resides within a complex environment, and there are terms from both, the problem domain (radiometry with synchrotron radiation) and the solution domain (measurement program, software development) that either users or developers may not necessarily be familiar with. Hence the idea of a growing list of terms and attempts to define them. A big thanks to all colleagues helping to shed light on all the different aspects.
+The evedataviewer application resides within a complex environment, and there are terms from both, the problem domain (radiometry with synchrotron radiation) and the solution domain (measurement program, software development) that either users or developers may not necessarily be familiar with. Hence the idea of a growing list of terms and attempts to define them. A big thanks to all colleagues helping to shed light on all the different aspects.
 
 
 CA

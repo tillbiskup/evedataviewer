@@ -17,7 +17,7 @@ with open(
 ) as version_file:
     release_ = version_file.read().strip()
 
-project = "eveviewer"
+project = "evedataviewer"
 copyright = "2023-24, Till Biskup"
 author = "Till Biskup"
 
@@ -120,12 +120,12 @@ html_theme = "sphinx_rtd_theme"
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = "./images/eveviewer-logo.png"
+html_logo = "./images/evedataviewer-logo.png"
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-html_favicon = "./images/eveviewer-favicon.ico"
+html_favicon = "./images/evedataviewer-favicon.ico"
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -147,7 +147,7 @@ html_favicon = "./images/eveviewer-favicon.ico"
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "eveviewer"
+htmlhelp_basename = "evedataviewer"
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -172,8 +172,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "eveviewer.tex",
-        "eveviewer Documentation",
+        "evedataviewer.tex",
+        "evedataviewer Documentation",
         "Till Biskup",
         "manual",
     ),
@@ -185,7 +185,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, "eveviewer", "eveviewer Documentation", [author], 1)
+    (master_doc, "evedataviewer", "evedataviewer Documentation", [author], 1)
 ]
 
 
@@ -197,10 +197,10 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "eveviewer",
-        "eveviewer Documentation",
+        "evedataviewer",
+        "evedataviewer Documentation",
         author,
-        "eveviewer",
+        "evedataviewer",
         "A GUI for inspecting data contained in EVE files",
         "Miscellaneous",
     ),

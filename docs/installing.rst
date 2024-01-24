@@ -3,22 +3,22 @@ Installation
 
 .. important::
 
-    This section assumes the eveviewer package to be available officially from the Python Package Index (PyPI), what is not (yet) the case. Hence, for the time being, you need to install it via pip using a local path:
+    This section assumes the evedataviewer package to be available officially from the Python Package Index (PyPI), what is not (yet) the case. Hence, for the time being, you need to install it via pip using a local path:
 
     .. code-block:: bash
 
-        pip install <path/to/eveviewer>
+        pip install <path/to/evedataviewer>
 
     Besides that, all other information on this page is still valid.
 
 
-Installing the eveviewer package is as simple as installing any other Python package, as eveviewer is available from the `Python Package Index (PyPI) <https://www.pypi.org/>`_. Simply open a terminal on your computer and type:
+Installing the evedataviewer package is as simple as installing any other Python package, as evedataviewer is available from the `Python Package Index (PyPI) <https://www.pypi.org/>`_. Simply open a terminal on your computer and type:
 
 .. code-block:: bash
 
-    pip install eveviewer
+    pip install evedataviewer
 
-This will install the eveviewer package (and all its dependencies) on your computer.
+This will install the evedataviewer package (and all its dependencies) on your computer.
 
 Of course, you need to have Python (and pip) installed before you can use the above command, and it is always advisable to install packages in a **virtual environment** of their own.
 
@@ -26,11 +26,11 @@ Hence, a more thorough sequence of events would be:
 
 #. Install Python (if it is not already installed on your system).
 
-#. Create a Python virtual environment for eveviewer.
+#. Create a Python virtual environment for evedataviewer.
 
 #. Activate the newly created virtual environment.
 
-#. Install eveviewer therein, using the above command.
+#. Install evedataviewer therein, using the above command.
 
 A few details for all these steps are given below.
 
@@ -50,9 +50,9 @@ The good news: Creating Python virtual environments is fairly simple:
 
 .. code-block:: bash
 
-    python3 -m venv eveviewer
+    python3 -m venv evedataviewer
 
-This will create a Python virtual environment named ``eveviewer`` in the current directory. Of course, you can give your virtual environment any name you like. However, be careful with spaces and special characters, depending on your system.
+This will create a Python virtual environment named ``evedataviewer`` in the current directory. Of course, you can give your virtual environment any name you like. However, be careful with spaces and special characters, depending on your system.
 
 
 Activate the newly created virtual environment
@@ -62,23 +62,23 @@ A Python virtual environment needs to be activated. This is usually done using t
 
 .. code-block:: bash
 
-    source eveviewer/bin/activate
+    source evedataviewer/bin/activate
 
-Assuming in this case that your virtual environment is called ``eveviewer`` and that you are in the same path where you just created your virtual environment.
+Assuming in this case that your virtual environment is called ``evedataviewer`` and that you are in the same path where you just created your virtual environment.
 
 Deactivating is simple as well, once you are done. Either close the terminal, or issue the command ``deactivate``.
 
 
-Install eveviewer
+Install evedataviewer
 -----------------
 
-Once you activated your virtual environment where you want to install the eveviewer package in, proceed as given above:
+Once you activated your virtual environment where you want to install the evedataviewer package in, proceed as given above:
 
 .. code-block:: bash
 
-    pip install eveviewer
+    pip install evedataviewer
 
-This will download the eveviewer package from the `Python Package Index (PyPI) <https://www.pypi.org/>`_ and install it locally. All dependencies will be installed as well.
+This will download the evedataviewer package from the `Python Package Index (PyPI) <https://www.pypi.org/>`_ and install it locally. All dependencies will be installed as well.
 
 
 .. note::

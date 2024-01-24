@@ -7,19 +7,19 @@ This is the definite source of information for developers, besides having a look
 Modules
 -------
 
-An alphabetic list of the modules available within the eveviewer package. The actual documentation is split in pages for each module, respectively.
+An alphabetic list of the modules available within the evedataviewer package. The actual documentation is split in pages for each module, respectively.
 
 .. toctree::
     :maxdepth: 1
 
-    eveviewer.dataset
-    eveviewer.io
-    eveviewer.utils
+    evedataviewer.dataset
+    evedataviewer.io
+    evedataviewer.utils
 
 Subpackages
 -----------
 
-An alphabetic list of the subpackages available within the eveviewer package. The actual documentation is split in pages for each module of each subpackage, respectively.
+An alphabetic list of the subpackages available within the evedataviewer package. The actual documentation is split in pages for each module of each subpackage, respectively.
 
 .. toctree::
     :maxdepth: 2

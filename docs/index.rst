@@ -1,23 +1,23 @@
 =========
-eveviewer
+evedataviewer
 =========
 
 *A GUI for inspecting data contained in EVE files.*
 
-Welcome! This is the documentation for eveviewer, a Python package for **graphically inspecting data** contained in EVE files, *i.e.* data **obtained at one of the beamlines at BESSY-II or MLS in Berlin**, mostly operated by the German National Metrology Institute, the `Physikalisch-Technische Bundesanstalt (PTB) <https://www.ptb.de/>`_. The primary goal of the package is to provide a GUI to conveniently inspect (and preliminary analyse) data directly at the beamline.
+Welcome! This is the documentation for evedataviewer, a Python package for **graphically inspecting data** contained in EVE files, *i.e.* data **obtained at one of the beamlines at BESSY-II or MLS in Berlin**, mostly operated by the German National Metrology Institute, the `Physikalisch-Technische Bundesanstalt (PTB) <https://www.ptb.de/>`_. The primary goal of the package is to provide a GUI to conveniently inspect (and preliminary analyse) data directly at the beamline.
 
-Running eveviewer is as simple as typing ``eveviewer`` into a terminal:
+Running evedataviewer is as simple as typing ``evedataviewer`` into a terminal:
 
 .. code-block:: bash
 
-    eveviewer
+    evedataviewer
 
-This will open the eveviewer GUI and get you started.
+This will open the evedataviewer GUI and get you started.
 
-.. figure:: images/eveviewer-screenshot.png
+.. figure:: images/evedataviewer-screenshot.png
    :align: center
 
-   Screenshot of the eveviewer GUI with a dataset loaded. The central element is the graphical display of the data, while the file browser allows for conveniently browsing directories and files and selecting (multiple) datasets to be displayed. On the right you can see a dockable widget for display settings.
+   Screenshot of the evedataviewer GUI with a dataset loaded. The central element is the graphical display of the data, while the file browser allows for conveniently browsing directories and files and selecting (multiple) datasets to be displayed. On the right you can see a dockable widget for display settings.
 
 
 Features
@@ -46,17 +46,17 @@ Further details are provided in the :doc:`general architecture section <architec
 
 
 .. warning::
-    eveviewer is currently under active development and still considered in Beta development state. Therefore, expect frequent changes in features and public APIs that may break your own code. Nevertheless, feedback as well as feature requests are highly welcome.
+    evedataviewer is currently under active development and still considered in Beta development state. Therefore, expect frequent changes in features and public APIs that may break your own code. Nevertheless, feedback as well as feature requests are highly welcome.
 
 
 Installation
 ============
 
-To install the eveviewer package on your computer (sensibly within a Python virtual environment), open a terminal (activate your virtual environment), and type in the following:
+To install the evedataviewer package on your computer (sensibly within a Python virtual environment), open a terminal (activate your virtual environment), and type in the following:
 
 .. code-block:: bash
 
-    pip install eveviewer
+    pip install evedataviewer
 
 See the :doc:`installation section <installing>` for further details.
 

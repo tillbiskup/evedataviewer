@@ -9,7 +9,7 @@ def read(filename):
 
 
 setuptools.setup(
-    name="eveviewer",
+    name="evedataviewer",
     version=read("VERSION").strip(),
     description="A GUI for inspecting data contained in EVE files",
     long_description=read("README.rst"),
@@ -18,8 +18,8 @@ setuptools.setup(
     author_email="till.biskup@ptb.de",
     url="https://www.ahf.ptb.de/",
     project_urls={
-        "Documentation": "https://eveviewer.docs.till-biskup.de/",
-        "Source": "https://github.com/tillbiskup/eveviewer",
+        "Documentation": "https://evedataviewer.docs.till-biskup.de/",
+        "Source": "https://github.com/tillbiskup/evedataviewer",
     },
     packages=setuptools.find_packages(exclude=("tests", "docs")),
     license="GPLv3",
@@ -46,7 +46,7 @@ setuptools.setup(
         "Development Status :: 4 - Beta",
     ],
     entry_points={
-        "gui_scripts": ["eveviewer = eveviewer.gui.app:main"],
+        "gui_scripts": ["evedataviewer = evedataviewer.gui.app:main"],
     },
     install_requires=[
         "pandas",

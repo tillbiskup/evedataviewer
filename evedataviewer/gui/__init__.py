@@ -1,0 +1,1 @@
+"""evedataviewer GUI components"""

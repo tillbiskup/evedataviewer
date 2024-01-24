@@ -8,7 +8,7 @@ include VERSION
 include LICENSE*
 
 # Include package data
-recursive-include eveviewer *
+recursive-include evedataviewer *
 
 # Include GUI data
-recursive-include eveviewer/gui/images *
+recursive-include evedataviewer/gui/images *

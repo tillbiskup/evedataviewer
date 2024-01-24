@@ -39,7 +39,7 @@ Below is a first summary of what the widget should allow doing:
   ``0`` internally is due to the zero-based indexing of Python. For the
   actual display, this may be changed depending on user preferences.
 
-The widget gets added to the main GUI window of the eveviewer GUI, either as
+The widget gets added to the main GUI window of the evedataviewer GUI, either as
 dockable window (preferable) or fixed in the layout.
 
 """
@@ -47,7 +47,7 @@ dockable window (preferable) or fixed in the layout.
 from PySide6 import QtWidgets, QtCore
 import qtbricks.utils
 
-from eveviewer.gui import model as gui_model
+from evedataviewer.gui import model as gui_model
 
 
 # pylint: disable=too-many-instance-attributes
@@ -100,17 +100,17 @@ class DatasetDisplayWidget(QtWidgets.QWidget):
         Model of the Model--View architecture used by the widget.
 
         When setting the model, the
-        :attr:`eveviewer.gui.model.Model.dataset_selection_changed` signal is
+        :attr:`evedataviewer.gui.model.Model.dataset_selection_changed` signal is
         connected to the widget update method.
 
         Parameters
         ----------
-        model : :class:`eveviewer.gui.model.Model`
+        model : :class:`evedataviewer.gui.model.Model`
             The model used by the widget.
 
         Returns
         -------
-        model : :class:`eveviewer.gui.model.Model`
+        model : :class:`evedataviewer.gui.model.Model`
             The model used by the widget.
 
         """

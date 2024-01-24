@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: If you use this software, please cite it using these metadata.
-title: eveviewer
+title: evedataviewer
 abstract: >
     A GUI for inspecting data contained in EVE files
 authors:
@@ -9,7 +9,7 @@ authors:
     orcid: "https://orcid.org/0000-0003-2913-0004"
 type: software
 license: GPL-3.0
-repository-code: "https://github.com/tillbiskup/eveviewer"
+repository-code: "https://github.com/tillbiskup/evedataviewer"
 keywords:
   - "data viewer"
   - "eve"

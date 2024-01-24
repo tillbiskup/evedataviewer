@@ -221,7 +221,7 @@ class EVEMeasurement:
 
     Some information is collected and can be accessed directly:
     > m.comment: The comment as set in the scan, plus the live comment in braces, if a live comment was provided.
-    > m.location
+    > m.evedataviewer
     > m.start
     > m.preferred_axis: preferred motor axis (e.g. for plotting)
     > m.preferred_channel: preferred measurement channel (e.g. for plotting)
@@ -266,8 +266,10 @@ class EVEMeasurement:
         # using None or sensible defaults as default for non-vital attributes
         self.eve_version = self.info.pop("Version", None)
         self.eve_xml_version = self.info.pop("XMLversion", None)
-        self.location = self.info.pop("Location", None)
+        self.evedataviewer = self.info.pop("evedataviewer", None)
         self.comment = self.info.pop("Comment", os.path.basename(filename))
+
+        self.location = self.info.pop("Location", None)
 
         if "Live-Comment" in self.info:
             self.comment = "{} (live: {})".format(
@@ -330,11 +332,11 @@ class EVEMeasurement:
         return list(self.__dict__.keys()) + dir(self.chain)
 
     def __str__(self):
-        ret = "<EVEMeasurement file: {!r}, comment: {}, start: {}, location: {}, chains: [{}]".format(
+        ret = "<EVEMeasurement file: {!r}, comment: {}, start: {}, evedataviewer: {}, chains: [{}]".format(
             self.filename,
             self.comment,
             self.start,
-            self.location,
+            self.evedataviewer,
             ", ".join((str(chain) for chain in self.chains)),
         )
         if self.monitor:
@@ -656,7 +658,7 @@ class MotorsSensorsScanSensorsMeasurement(EVEMeasurement):
 
     Some information is collected and can be accessed directly:
     > m.comment: The comment as set in the scan, plus the live comment in braces, if a live comment was provided.
-    > m.location
+    > m.evedataviewer
     > m.start
     > m.preferred_axis: preferred motor axis (e.g. for plotting)
     > m.preferred_channel: preferred measurement channel (e.g. for plotting)
@@ -729,12 +731,12 @@ class MotorsSensorsScanSensorsMeasurement(EVEMeasurement):
 
     def __str__(self):
         ret = (
-            "<StandardMeasurement file: {filename!r}, comment: {comment}, start: {start}, location: {location}, "
+            "<StandardMeasurement file: {filename!r}, comment: {comment}, start: {start}, evedataviewer: {evedataviewer}, "
             "channels: {channels}".format(
                 filename=self.filename,
                 comment=self.comment,
                 start=self.start,
-                location=self.location,
+                evedataviewer=self.evedataviewer,
                 channels=list(self.data.columns),
             )
         )

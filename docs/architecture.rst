@@ -2,13 +2,13 @@
 General architecture
 ====================
 
-The eveviewer package aims at modularity and maintainability over a long time period and with different maintainers. Hence a few comments on how this can be achieved and what consequences this will have for the overall software architecture.
+The evedataviewer package aims at modularity and maintainability over a long time period and with different maintainers. Hence a few comments on how this can be achieved and what consequences this will have for the overall software architecture.
 
 
 Key aspects
 ===========
 
-Writing software that just about "works for me" is easy. Writing software that can be maintained for long(er) time and extended and adapted to future needs is an entirely different matter. The following aspects are best practices of (scientific) software development the eveviewer package tries to follow closely:
+Writing software that just about "works for me" is easy. Writing software that can be maintained for long(er) time and extended and adapted to future needs is an entirely different matter. The following aspects are best practices of (scientific) software development the evedataviewer package tries to follow closely:
 
 * Strict separation of concerns
 

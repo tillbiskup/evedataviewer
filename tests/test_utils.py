@@ -1,6 +1,6 @@
 import unittest
 
-from eveviewer import utils
+from evedataviewer import utils
 
 
 class TestListsAreEqual(unittest.TestCase):

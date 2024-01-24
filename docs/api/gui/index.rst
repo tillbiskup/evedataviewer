@@ -1,7 +1,7 @@
-eveviewer.gui subpackage
+evedataviewer.gui subpackage
 ========================
 
-.. automodule:: eveviewer.gui
+.. automodule:: evedataviewer.gui
    :members:
    :undoc-members:
    :show-inheritance:
@@ -10,11 +10,11 @@ eveviewer.gui subpackage
 .. toctree::
     :maxdepth: 1
 
-    eveviewer.gui.app
-    eveviewer.gui.dataset_display_widget
-    eveviewer.gui.mainwindow
-    eveviewer.gui.measurement_characteristics_widget
-    eveviewer.gui.model
+    evedataviewer.gui.app
+    evedataviewer.gui.dataset_display_widget
+    evedataviewer.gui.mainwindow
+    evedataviewer.gui.measurement_characteristics_widget
+    evedataviewer.gui.model
 
 
 

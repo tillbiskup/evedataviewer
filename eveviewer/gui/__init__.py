@@ -1,1 +1,0 @@
-"""eveviewer GUI components"""

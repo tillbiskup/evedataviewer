@@ -3,8 +3,8 @@ import unittest
 import matplotlib.pyplot as plt
 from PySide6.QtWidgets import QApplication
 
-import eveviewer.dataset
-from eveviewer.gui import model as gui_model
+import evedataviewer.dataset
+from evedataviewer.gui import model as gui_model
 
 
 class SignalReceiver:
@@ -106,7 +106,7 @@ class TestModel(unittest.TestCase):
         dataset = "foo"
         self.model.datasets_to_display = [dataset]
         self.assertIsInstance(
-            self.model.datasets[dataset], eveviewer.dataset.Dataset
+            self.model.datasets[dataset], evedataviewer.dataset.Dataset
         )
 
     def test_setting_multiple_datasets_to_display_loads_datasets(self):
