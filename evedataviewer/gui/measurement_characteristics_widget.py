@@ -15,6 +15,7 @@ In short: This widget is entirely read-only.
 """
 
 from PySide6 import QtWidgets, QtCore
+import qtbricks.widgets
 
 from evedataviewer.gui import model as gui_model
 
@@ -30,6 +31,7 @@ class MeasurementCharacteristicsWidget(QtWidgets.QWidget):
     Note that the widget is currently entirely read-only.
     """
 
+    # pylint: disable=too-many-instance-attributes
     def __init__(self):
         super().__init__()
 
@@ -47,6 +49,19 @@ class MeasurementCharacteristicsWidget(QtWidgets.QWidget):
         self._duration_value_label = QtWidgets.QLabel()
         self._location_label = QtWidgets.QLabel()
         self._location_value_label = QtWidgets.QLabel()
+
+        self._max_value_label = QtWidgets.QLabel()
+        self._max_value_value_label = QtWidgets.QLabel()
+        self._max_position_label = QtWidgets.QLabel()
+        self._max_position_value_label = QtWidgets.QLabel()
+        self._fwhm_label = QtWidgets.QLabel()
+        self._fwhm_value_label = QtWidgets.QLabel()
+        self._centre_label = QtWidgets.QLabel()
+        self._centre_value_label = QtWidgets.QLabel()
+        self._edge_label = QtWidgets.QLabel()
+        self._edge_value_label = QtWidgets.QLabel()
+        self._step_width_label = QtWidgets.QLabel()
+        self._step_width_value_label = QtWidgets.QLabel()
 
         self._setup_ui()
         self._update_ui()
@@ -136,21 +151,31 @@ class MeasurementCharacteristicsWidget(QtWidgets.QWidget):
         the class constructor.
         """
         self._time_start_label.setText("Time start:")
-        self._time_start_label.setAlignment(
-            QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter
-        )
         self._time_end_label.setText("Time end:")
-        self._time_end_label.setAlignment(
-            QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter
-        )
         self._duration_label.setText("Duration:")
-        self._duration_label.setAlignment(
-            QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter
-        )
         self._location_label.setText("Location:")
-        self._location_label.setAlignment(
-            QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter
-        )
+        self._max_value_label.setText("Max value:")
+        self._max_position_label.setText("Max position:")
+        self._fwhm_label.setText("FWHM:")
+        self._centre_label.setText("Centre:")
+        self._edge_label.setText("Edge:")
+        self._step_width_label.setText("Step width:")
+        labels = [
+            "_time_start",
+            "_time_end",
+            "_duration",
+            "_location",
+            "_max_value",
+            "_max_position",
+            "_fwhm",
+            "_centre",
+            "_edge",
+            "_step_width",
+        ]
+        for label in labels:
+            getattr(self, f"{label}_label").setAlignment(
+                QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter
+            )
 
     def _set_layout(self):
         """
@@ -172,6 +197,19 @@ class MeasurementCharacteristicsWidget(QtWidgets.QWidget):
         top_layout.addWidget(self._duration_value_label, 2, 1)
         top_layout.addWidget(self._location_label, 3, 0)
         top_layout.addWidget(self._location_value_label, 3, 1)
+        top_layout.addWidget(qtbricks.widgets.QHLine(), 4, 0, 1, 2)
+        top_layout.addWidget(self._max_value_label, 5, 0)
+        top_layout.addWidget(self._max_value_value_label, 5, 1)
+        top_layout.addWidget(self._max_position_label, 6, 0)
+        top_layout.addWidget(self._max_position_value_label, 6, 1)
+        top_layout.addWidget(self._fwhm_label, 7, 0)
+        top_layout.addWidget(self._fwhm_value_label, 7, 1)
+        top_layout.addWidget(self._centre_label, 8, 0)
+        top_layout.addWidget(self._centre_value_label, 8, 1)
+        top_layout.addWidget(self._edge_label, 9, 0)
+        top_layout.addWidget(self._edge_value_label, 9, 1)
+        top_layout.addWidget(self._step_width_label, 10, 0)
+        top_layout.addWidget(self._step_width_value_label, 10, 1)
         layout = QtWidgets.QVBoxLayout()
         layout.addLayout(top_layout)
         layout.addStretch(1)
