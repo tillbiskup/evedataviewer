@@ -70,7 +70,7 @@ Deactivating is simple as well, once you are done. Either close the terminal, or
 
 
 Install evedataviewer
------------------
+---------------------
 
 Once you activated your virtual environment where you want to install the evedataviewer package in, proceed as given above:
 

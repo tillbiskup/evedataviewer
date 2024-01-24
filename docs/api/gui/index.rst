@@ -1,5 +1,5 @@
 evedataviewer.gui subpackage
-========================
+============================
 
 .. automodule:: evedataviewer.gui
    :members:

@@ -1,6 +1,6 @@
-=======================
+===========================
 People behind evedataviewer
-=======================
+===========================
 
 Who are the people behind the evedataviewer package?
 
