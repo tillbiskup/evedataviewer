@@ -61,11 +61,36 @@ To install the evedataviewer package on your computer (sensibly within a Python 
 See the :doc:`installation section <installing>` for further details.
 
 
+Related projects
+================
+
+There is a number of related packages users of the radiometry package may well be interested in, as they have a similar scope, focussing on scientific data analysis and reproducible research.
+
+* `ASpecD <https://docs.aspecd.de/>`_
+
+  A Python framework for the analysis of spectroscopic data focussing on reproducibility and good scientific practice. The framework the radiometry package is based on, developed by T. Biskup.
+
+* radiometry
+
+  A Python package for **processing and analysing (synchrotron) radiometry data** in a **reproducible** and mostly **automated** fashion. Currently, it focusses on data obtained at one of the beamlines at **BESSY-II or MLS in Berlin**, mostly operated by the German National Metrology Institute, the `Physikalisch-Technische Bundesanstalt (PTB) <https://www.ptb.de/>`_.
+
+* evedata
+
+  A Python package for **importing (synchrotron) radiometry data** obtained at one of the beamlines at **BESSY-II or MLS in Berlin**, mostly operated by the German National Metrology Institute, the `Physikalisch-Technische Bundesanstalt (PTB) <https://www.ptb.de/>`_.
+
+Finally, don't forget to check out the website on `reproducible research <https://www.reproducible-research.de/>`_ covering in more general terms aspects of reproducible research and good scientific practice.
+
+
 License
 =======
 
 This program is free software: you can redistribute it and/or modify it under the terms of the **GPLv3 License**.
 
+
+A note on the logo
+==================
+
+The logo depicts the data files emerging from performing metrology measurements with synchrotron radiation at the beamlines operated by the `Physikalisch-Technische Bundesanstalt (PTB) <https://www.ptb.de/>`_ in Berlin. The copyright of the logo belongs to T. Biskup.
 
 
 .. toctree::
