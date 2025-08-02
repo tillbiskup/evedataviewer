@@ -16,9 +16,9 @@ setuptools.setup(
     long_description_content_type="text/x-rst",
     author="Till Biskup",
     author_email="till.biskup@ptb.de",
-    url="https://www.ahf.ptb.de/",
+    url="https://www.ptb.de/cms/en/ptb/fachabteilungen/abt7/ptb-sr.html",
     project_urls={
-        "Documentation": "https://evedataviewer.docs.till-biskup.de/",
+        "Documentation": "https://evedataviewer.docs.radiometry.de/",
         "Source": "https://github.com/tillbiskup/evedataviewer",
     },
     packages=setuptools.find_packages(exclude=("tests", "docs")),
@@ -31,11 +31,10 @@ setuptools.setup(
         "metrology",
         "PTB",
         "BESSY",
+        "MLS",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
@@ -68,6 +67,6 @@ setuptools.setup(
             "sphinx_multiversion",
         ],
     },
-    python_requires=">=3.7",
+    python_requires=">=3.9",
     include_package_data=True,
 )
